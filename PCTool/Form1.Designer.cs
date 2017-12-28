@@ -178,12 +178,12 @@
             // 
             this.DisclaimerLbl.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.DisclaimerLbl.AutoSize = true;
-            this.DisclaimerLbl.Location = new System.Drawing.Point(399, 578);
+            this.DisclaimerLbl.Location = new System.Drawing.Point(415, 578);
             this.DisclaimerLbl.Name = "DisclaimerLbl";
-            this.DisclaimerLbl.Size = new System.Drawing.Size(87, 17);
+            this.DisclaimerLbl.Size = new System.Drawing.Size(54, 17);
             this.DisclaimerLbl.TabIndex = 6;
             this.DisclaimerLbl.TabStop = true;
-            this.DisclaimerLbl.Text = "© Disclaimer";
+            this.DisclaimerLbl.Text = "© 2018";
             this.DisclaimerLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DisclaimerLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DisclaimerLbl_LinkClicked);
             // 

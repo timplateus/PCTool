@@ -191,6 +191,13 @@ namespace PCTool
             try
             {
                 app = new Excel.Application();
+
+                if (app == null)
+                {
+                    MessageBox.Show("A working instance of Excel needs to be installed.");
+                    return;
+                }
+
                 books = app.Workbooks;
                 book = books.Open(@"C:\Users\tplateus\Documents\Custom Office Templates\templatev1.xltx");
                 sheets = book.Sheets;
@@ -476,7 +483,8 @@ namespace PCTool
 
         private void DisclaimerLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            Disclaimer copyrightForm = new Disclaimer();
+            copyrightForm.ShowDialog(this);
         }
     }
 }
