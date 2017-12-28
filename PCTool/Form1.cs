@@ -20,6 +20,8 @@ namespace PCTool
 
 
         public List<String> filepaths = new List<String>();
+
+        public string outputfile = @"C:\Users\tplateus\Desktop\XML\output.xlsx";
         
 
         public Form1()
@@ -178,86 +180,124 @@ namespace PCTool
 
         private void DisplayInExcel2(string[,] Matrix)
         {
+            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+
             Excel.Application app = null;
+            Excel.Application openApp = null;
+        
             Excel.Workbooks books = null;
+            Excel.Workbooks openBooks = null;
+
             Excel.Workbook book = null;
+
             Excel.Sheets sheets = null;
             Excel.Worksheet sheet = null;
           
             Excel.Range range = null;
             Excel.Range rows = null;
 
+            List<string> errors = new List<string>();
 
             try
             {
-                app = new Excel.Application();
+                openApp= (Excel.Application)Marshal.GetActiveObject("Excel.Application");
 
-                if (app == null)
+                openBooks = openApp.Workbooks;
+
+                for (int i = 1; i <= openBooks.Count; i++)
                 {
-                    MessageBox.Show("A working instance of Excel needs to be installed.");
-                    return;
-                }
-
-                books = app.Workbooks;
-                book = books.Open(@"C:\Users\tplateus\Documents\Custom Office Templates\templatev1.xltx");
-                sheets = book.Sheets;
-                sheet = sheets.Item[1];
-                range = sheet.Cells[1,1];
-
-                int rowCount = Matrix.GetLength(0);
-                int columnCount = Matrix.GetLength(1);
-
-                range = range.Resize[rowCount, columnCount];
-
-                range.Value = Matrix;
-
-                rows = range.Rows;
-
-                for (int iRow = 2; iRow <= rowCount; iRow++)
-                {
-                    Excel.Range row = rows.Item[iRow]; //Index start van 1. Eerste rij = headers.
-
-                    object[,] objRow = row.Value2;
-                    List<string> listRow = objRow.Cast<string>().ToList();
-                    
-                    for (int i = 3; i < listRow.Count; i++)
+                    Excel.Workbook openBook = openBooks[i];
+                    Console.WriteLine(openBook.FullName);
+                    if (openBook.FullName == outputfile)
                     {
-                        string cellValue = listRow[i];
-                        List<string> allSameValues = listRow.FindAll(x => x == cellValue);
-                        List<string> allValuesWithNotFound = listRow.FindAll(x => x == "!NOT_FOUND");
-
-                        if (allValuesWithNotFound.Count == 0)
-                        {
-                            if (allSameValues.Count < listRow.Count-3)
-                            {
-                                //Console.WriteLine(row.Cells[iRow, listRow.Count].Value2);
-                                Excel.Range value = row.Cells[1, i+1];
-                                //Console.WriteLine(value.Value2);
-                                value.Interior.Color = Color.Red;
-                                value.Font.Color = Color.White;
-
-                                if (value != null) Marshal.ReleaseComObject(value);
-                            }
-                        }
-                        if (cellValue == "!NOT_FOUND")
-                        {
-                            Excel.Range cell = row.Cells[1, i + 1];
-                            cell.Interior.Color = Color.Orange;
-                            cell.Value2 = "";
-
-                            if (cell != null) Marshal.ReleaseComObject(cell);
-                        }
+                        errors.Add("The output file is already opened. Please close this file or choose a different output file.");
                     }
 
-                    if (row != null) Marshal.ReleaseComObject(row);
+                    Marshal.ReleaseComObject(openBook);
                 }
 
-                app.DisplayAlerts = false;
-                object missing = System.Reflection.Missing.Value;
-                book.SaveAs("C:\\Users\\tplateus\\Desktop\\XML\\output.xlsx", Excel.XlFileFormat.xlWorkbookDefault, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
-                book.Close(true, missing, missing);
-                app.DisplayAlerts = true;
-                app.Quit();
+                if (errors.Count == 0)
+                {
+                    app = new Excel.Application();
+
+                    if (app == null)
+                    {
+                        MessageBox.Show("A working instance of Excel needs to be installed.");
+                        return;
+                    }
+
+
+                    books = app.Workbooks;
+                    book = books.Open(@"C:\Users\tplateus\Documents\Custom Office Templates\templatev1.xltx");
+                    sheets = book.Sheets;
+                    sheet = sheets.Item[1];
+                    range = sheet.Cells[1, 1];
+
+                    int rowCount = Matrix.GetLength(0);
+                    int columnCount = Matrix.GetLength(1);
+
+                    range = range.Resize[rowCount, columnCount];
+
+                    range.Value = Matrix;
+
+                    rows = range.Rows;
+
+                    for (int iRow = 2; iRow <= rowCount; iRow++)
+                    {
+                        Excel.Range row = rows.Item[iRow]; //Index start van 1. Eerste rij = headers.
+
+                        object[,] objRow = row.Value2;
+                        List<string> listRow = objRow.Cast<string>().ToList();
+
+                        for (int i = 3; i < listRow.Count; i++)
+                        {
+                            string cellValue = listRow[i];
+                            List<string> allSameValues = listRow.FindAll(x => x == cellValue);
+                            List<string> allValuesWithNotFound = listRow.FindAll(x => x == "!NOT_FOUND");
+
+                            if (allValuesWithNotFound.Count == 0)
+                            {
+                                if (allSameValues.Count < listRow.Count - 3)
+                                {
+                                    //Console.WriteLine(row.Cells[iRow, listRow.Count].Value2);
+                                    Excel.Range value = row.Cells[1, i + 1];
+                                    //Console.WriteLine(value.Value2);
+                                    value.Interior.Color = Color.Red;
+                                    value.Font.Color = Color.White;
+
+                                    if (value != null) Marshal.ReleaseComObject(value);
+                                }
+                            }
+                            if (cellValue == "!NOT_FOUND")
+                            {
+                                Excel.Range cell = row.Cells[1, i + 1];
+                                cell.Interior.Color = Color.Orange;
+                                cell.Value2 = "";
+
+                                if (cell != null) Marshal.ReleaseComObject(cell);
+                            }
+                        }
+
+                        if (row != null) Marshal.ReleaseComObject(row);
+                    }
+
+                    app.DisplayAlerts = false;
+                    object missing = System.Reflection.Missing.Value;
+                    book.SaveAs("C:\\Users\\tplateus\\Desktop\\XML\\output.xlsx", Excel.XlFileFormat.xlWorkbookDefault, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
+                    book.Close(true, missing, missing);
+                    app.DisplayAlerts = true;
+                    app.Quit();
+
+                    string elapsed = watch.Elapsed.Seconds.ToString();
+                    string message = "The output file 'output.xlsx' was succesfully created at C:/Users/tplateus/Desktop/XML.";
+                    message = message + Environment.NewLine + "Elapsed time: " + elapsed + "s.";
+                    
+                    MessageBox.Show(message);
+                }
+                else
+                {
+                    DisplayErrors(errors);
+                }
             }
             finally
             {
@@ -268,6 +308,10 @@ namespace PCTool
                 if (book != null) Marshal.ReleaseComObject(book);
                 if (books != null) Marshal.ReleaseComObject(books);
                 if (app != null) Marshal.ReleaseComObject(app);
+
+                if (openBooks != null) Marshal.ReleaseComObject(openBooks);
+                if (openApp != null) Marshal.ReleaseComObject(openApp);
+
 
             }
                        
@@ -407,7 +451,7 @@ namespace PCTool
 
         private void GenerateExcelBtn_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            //System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
             filepaths = LoadPaths();
             fileIds = LoadIds();
             if (filepaths.Count == 0 || fileIds.Count == 0)
@@ -423,17 +467,9 @@ namespace PCTool
                 baseList = AddToList2(baseList, newList);
             }
 
-
-
-            string[,] test = GetMatrix(baseList, fileIds);
-            DisplayInExcel2(test);
-            string elapsed = watch.Elapsed.ToString();
-            Console.WriteLine("Elapsed time: {0}", elapsed);
-            string message = "An output file 'output.xlsx' was created at C:/Users/tplateus/Desktop/XML.";
-            message = message + Environment.NewLine + "Elapsed time: ";
+            string[,] allCells = GetMatrix(baseList, fileIds);
+            DisplayInExcel2(allCells);
             
-            elapsed = String.Concat(message, elapsed, "s.");
-            MessageBox.Show(elapsed);
         }
 
         private void AddDescriptionBtn_Click(object sender, EventArgs e)
