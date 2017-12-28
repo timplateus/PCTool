@@ -28,16 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.SelectFileBtn = new System.Windows.Forms.Button();
             this.AddDescriptionBtn = new System.Windows.Forms.Button();
             this.SelectFileLbl = new System.Windows.Forms.Label();
             this.DescriptionBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.GenerateExcelBtn = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.FileId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Filepath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GenerateExcelBtn = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.DisclaimerLbl = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -54,15 +56,17 @@
             this.tableLayoutPanel1.Controls.Add(this.DescriptionBox, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.GenerateExcelBtn, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.DisclaimerLbl, 1, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(868, 571);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(885, 602);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // SelectFileBtn
@@ -74,7 +78,7 @@
             this.SelectFileBtn.Location = new System.Drawing.Point(10, 10);
             this.SelectFileBtn.Margin = new System.Windows.Forms.Padding(10);
             this.SelectFileBtn.Name = "SelectFileBtn";
-            this.SelectFileBtn.Size = new System.Drawing.Size(153, 30);
+            this.SelectFileBtn.Size = new System.Drawing.Size(157, 30);
             this.SelectFileBtn.TabIndex = 0;
             this.SelectFileBtn.Text = "Select File";
             this.SelectFileBtn.UseVisualStyleBackColor = true;
@@ -89,7 +93,7 @@
             this.AddDescriptionBtn.Location = new System.Drawing.Point(10, 60);
             this.AddDescriptionBtn.Margin = new System.Windows.Forms.Padding(10);
             this.AddDescriptionBtn.Name = "AddDescriptionBtn";
-            this.AddDescriptionBtn.Size = new System.Drawing.Size(153, 30);
+            this.AddDescriptionBtn.Size = new System.Drawing.Size(157, 30);
             this.AddDescriptionBtn.TabIndex = 2;
             this.AddDescriptionBtn.Text = "Add description";
             this.AddDescriptionBtn.UseVisualStyleBackColor = true;
@@ -102,11 +106,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SelectFileLbl.AutoSize = true;
             this.SelectFileLbl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.SelectFileLbl.Location = new System.Drawing.Point(176, 10);
+            this.SelectFileLbl.Location = new System.Drawing.Point(180, 10);
             this.SelectFileLbl.Margin = new System.Windows.Forms.Padding(3, 10, 3, 10);
             this.SelectFileLbl.Name = "SelectFileLbl";
             this.SelectFileLbl.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.SelectFileLbl.Size = new System.Drawing.Size(514, 30);
+            this.SelectFileLbl.Size = new System.Drawing.Size(525, 30);
             this.SelectFileLbl.TabIndex = 1;
             this.SelectFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -114,15 +118,18 @@
             // 
             this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.DescriptionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescriptionBox.Location = new System.Drawing.Point(176, 63);
+            this.DescriptionBox.Location = new System.Drawing.Point(180, 63);
             this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(514, 24);
+            this.DescriptionBox.Size = new System.Drawing.Size(525, 24);
             this.DescriptionBox.TabIndex = 1;
             this.DescriptionBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.InactiveBorder;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.FileId,
@@ -132,26 +139,8 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 103);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(687, 465);
+            this.dataGridView1.Size = new System.Drawing.Size(702, 465);
             this.dataGridView1.TabIndex = 4;
-            // 
-            // GenerateExcelBtn
-            // 
-            this.GenerateExcelBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.GenerateExcelBtn.AutoSize = true;
-            this.GenerateExcelBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GenerateExcelBtn.Location = new System.Drawing.Point(702, 318);
-            this.GenerateExcelBtn.Name = "GenerateExcelBtn";
-            this.GenerateExcelBtn.Size = new System.Drawing.Size(156, 35);
-            this.GenerateExcelBtn.TabIndex = 5;
-            this.GenerateExcelBtn.Text = "Generate Excel";
-            this.GenerateExcelBtn.UseVisualStyleBackColor = true;
-            this.GenerateExcelBtn.Click += new System.EventHandler(this.GenerateExcelBtn_Click);
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.DefaultExt = "xml";
-            this.openFileDialog1.Tag = "";
             // 
             // FileId
             // 
@@ -167,12 +156,45 @@
             this.Filepath.Name = "Filepath";
             this.Filepath.ReadOnly = true;
             // 
+            // GenerateExcelBtn
+            // 
+            this.GenerateExcelBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.GenerateExcelBtn.AutoSize = true;
+            this.GenerateExcelBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GenerateExcelBtn.Location = new System.Drawing.Point(718, 318);
+            this.GenerateExcelBtn.Name = "GenerateExcelBtn";
+            this.GenerateExcelBtn.Size = new System.Drawing.Size(156, 35);
+            this.GenerateExcelBtn.TabIndex = 5;
+            this.GenerateExcelBtn.Text = "Generate Excel";
+            this.GenerateExcelBtn.UseVisualStyleBackColor = true;
+            this.GenerateExcelBtn.Click += new System.EventHandler(this.GenerateExcelBtn_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "xml";
+            this.openFileDialog1.Tag = "";
+            // 
+            // DisclaimerLbl
+            // 
+            this.DisclaimerLbl.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.DisclaimerLbl.AutoSize = true;
+            this.DisclaimerLbl.Location = new System.Drawing.Point(399, 578);
+            this.DisclaimerLbl.Name = "DisclaimerLbl";
+            this.DisclaimerLbl.Size = new System.Drawing.Size(87, 17);
+            this.DisclaimerLbl.TabIndex = 6;
+            this.DisclaimerLbl.TabStop = true;
+            this.DisclaimerLbl.Text = "© Disclaimer";
+            this.DisclaimerLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DisclaimerLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DisclaimerLbl_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(868, 571);
+            this.ClientSize = new System.Drawing.Size(885, 602);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(525, 200);
             this.Name = "Form1";
             this.Text = "ParamCompare Tool";
@@ -195,6 +217,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Filepath;
+        private System.Windows.Forms.LinkLabel DisclaimerLbl;
     }
 }
 

@@ -331,17 +331,63 @@ namespace PCTool
 
         private List<string> LoadPaths()
         {
-            string url = "C:/Users/tplateus/Desktop/XML/";
-            List<string> list = new List<string>
+            //string url = "C:/Users/tplateus/Desktop/XML/";
+
+            //List<string> list = new List<string>
+            //{
+            //    "OVL","HAI","BXL","LIM"
+            //};
+
+            //for (int i = 0; i < list.Count; i++)
+            //{
+            //    list[i] = string.Concat(url, list[i], ".xml");
+            //}
+
+            List<string> paths = new List<string>();
+
+            int nRows = dataGridView1.Rows.Count;
+
+            if (nRows !=0)
             {
-                "OVL","HAI","BXL","LIM"
-            };
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i] = string.Concat(url, list[i], ".xml");
+                for (int i = 0; i < nRows; i++)
+                {
+                    paths.Add(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                }
+
             }
 
-            return list;
+            return paths;
+        }
+
+        private List<string> LoadIds()
+        {
+            List<string> Ids = new List<string>();
+
+            int nRows = dataGridView1.Rows.Count;
+
+            if (nRows != 0)
+            {
+                //For each row, take the value of the 1st column of the Grid and store it as a string in Ids.
+                for (int i = 0; i < nRows; i++)
+                {
+                    Ids.Add(dataGridView1.Rows[i].Cells[0].Value.ToString()); 
+                }
+            }
+
+
+
+            return Ids;
+        }
+
+        private void DisplayErrors(List<string> errors)
+        {
+            string errorMessage = "The following errors have occured:";
+            foreach (string error in errors)
+            {
+                errorMessage = errorMessage + Environment.NewLine + "   \u2022 " + error;
+
+            }
+            MessageBox.Show(errorMessage, "Attention", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
         private void SelectFileBtn_Click(object sender, EventArgs e)
@@ -356,7 +402,12 @@ namespace PCTool
         {
             System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
             filepaths = LoadPaths();
-
+            fileIds = LoadIds();
+            if (filepaths.Count == 0 || fileIds.Count == 0)
+            {
+                DisplayErrors(new List<string> { "At least one file has to be selected." });
+                return;
+            }
             List<Entry> baseList = LoadParamList(filepaths[0], fileIds[0]);
 
             for (int i = 1; i < filepaths.Count; i++)
@@ -371,7 +422,9 @@ namespace PCTool
             DisplayInExcel2(test);
             string elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Elapsed time: {0}", elapsed);
-            string message = "Elapsed time: ";
+            string message = "An output file 'output.xlsx' was created at C:/Users/tplateus/Desktop/XML.";
+            message = message + Environment.NewLine + "Elapsed time: ";
+            
             elapsed = String.Concat(message, elapsed, "s.");
             MessageBox.Show(elapsed);
         }
@@ -407,13 +460,7 @@ namespace PCTool
             }
             else
             {
-                string errorMessage = "The following errors have occured:";
-                foreach (string error in errors)
-                {
-                    errorMessage = errorMessage + Environment.NewLine + "   \u2022 " + error;
-
-                }
-                MessageBox.Show(errorMessage, "Attention", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                DisplayErrors(errors);
             }
 
             
@@ -425,6 +472,11 @@ namespace PCTool
             {
                 AddDescriptionBtn_Click(sender, e);
             }
+        }
+
+        private void DisclaimerLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
         }
     }
 }
