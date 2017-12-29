@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,16 +90,12 @@ namespace PCTool
 
                 foreach (Entry baseEntry in baseList)
                 {
-                    //Console.WriteLine("base: {0}.{1}.{2}.{3}",baseEntry.SetName,baseEntry.ListName,baseEntry.ParamName,baseEntry.ConfigName);
-                    //Console.WriteLine("new: {0}.{1}.{2}.{3}", entry.SetName, entry.ListName, entry.ParamName, entry.ConfigName);
-
                     Entry merged = baseEntry.Merge(entry);
                     
                     if (merged != null)
                     {
                         isNew = true;
                     }
-                    //Console.WriteLine("bool: {0}", isNew);
                 }
 
                 if (isNew)
@@ -200,21 +197,30 @@ namespace PCTool
 
             try
             {
-                openApp= (Excel.Application)Marshal.GetActiveObject("Excel.Application");
-
-                openBooks = openApp.Workbooks;
-
-                for (int i = 1; i <= openBooks.Count; i++)
+                try
                 {
-                    Excel.Workbook openBook = openBooks[i];
-                    Console.WriteLine(openBook.FullName);
-                    if (openBook.FullName == outputfile)
-                    {
-                        errors.Add("The output file is already opened. Please close this file or choose a different output file.");
-                    }
+                    openApp = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
 
-                    Marshal.ReleaseComObject(openBook);
+                    openBooks = openApp.Workbooks;
+
+                    for (int i = 1; i <= openBooks.Count; i++)
+                    {
+                        Excel.Workbook openBook = openBooks[i];
+                        Console.WriteLine(openBook.FullName);
+                        if (openBook.FullName == outputfile)
+                        {
+                            errors.Add("The output file is already opened. Please close this file or choose a different output file.");
+                        }
+
+                        Marshal.ReleaseComObject(openBook);
+                    }
                 }
+                finally
+                {
+                    if (openBooks != null) Marshal.ReleaseComObject(openBooks);
+                    if (openApp != null) Marshal.ReleaseComObject(openApp);
+                }
+
 
                 if (errors.Count == 0)
                 {
@@ -309,14 +315,13 @@ namespace PCTool
                 if (books != null) Marshal.ReleaseComObject(books);
                 if (app != null) Marshal.ReleaseComObject(app);
 
-                if (openBooks != null) Marshal.ReleaseComObject(openBooks);
-                if (openApp != null) Marshal.ReleaseComObject(openApp);
-
-
+                //Don't think these are needed anymore since they are part of inner try. Is this inner finally always reached?
+                //if (openBooks != null) Marshal.ReleaseComObject(openBooks); 
+                //if (openApp != null) Marshal.ReleaseComObject(openApp);
             }
-                       
 
-            
+
+
         }
 
         private string[,] GetMatrix(List<Entry> Entries, List<string> FileIds)
@@ -446,6 +451,7 @@ namespace PCTool
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 SelectFileLbl.Text = openFileDialog1.FileName;
+                this.GetNextControl((Control)sender, true).Focus();
             }
         }
 
@@ -472,7 +478,59 @@ namespace PCTool
             
         }
 
-        private void AddDescriptionBtn_Click(object sender, EventArgs e)
+        private void AddToGridView(object sender, EventArgs e)
+        {
+            List<string> errors = new List<string>();
+            List<string> fileIds = new List<string>();
+
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                fileIds.Add(dataGridView1.Rows[i].Cells[0].Value.ToString());
+            }
+
+            if (SelectFileLbl.Text == "")
+            {
+                errors.Add("No file is selected.");
+            }
+            if (DescriptionBox.Text == "")
+            {
+                errors.Add("Description can't be empty.");
+            }
+            if (fileIds.Find(x => x == DescriptionBox.Text) != null)
+            {
+                errors.Add("Description has to be unique.");
+            }
+
+            if (errors.Count == 0)
+            {
+                dataGridView1.Rows.Add(DescriptionBox.Text, SelectFileLbl.Text);
+                SelectFileLbl.Text = "";
+                DescriptionBox.Text = "";
+                this.GetNextControl((Control)sender, false).Focus();
+            }
+            else
+            {
+                DisplayErrors(errors);
+            }
+
+            
+        }
+
+        private void DescriptionBox_Enter(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                AddToGridView(sender, e);
+            }
+        }
+
+        private void DisclaimerLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Disclaimer copyrightForm = new Disclaimer();
+            copyrightForm.ShowDialog(this);
+        }
+
+        private void AddToListBtn_Click(object sender, EventArgs e)
         {
             List<string> errors = new List<string>();
             List<string> fileIds = new List<string>();
@@ -506,21 +564,82 @@ namespace PCTool
                 DisplayErrors(errors);
             }
 
+
+        }
+
+        //Front-end behaviour functions
+        private string SelectOutputDir(object sender,EventArgs e)
+        {
+            string selectedPath = "";
+
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                selectedPath = folderBrowserDialog1.SelectedPath;
+            }
+
+            return selectedPath;
+        }
+
+        private void BrowseDirBtn_Click(object sender, EventArgs e)
+        {
+            string selectedPath = SelectOutputDir(sender, e);
+
+            OutputDirBox.Text = selectedPath;
+        }
+
+        private List<string> FileNameHasErrors(string pathName,string fileName )
+        {
+            List<string> errors = new List<string>();
+
+            try
+            {
+                pathName = Path.GetFullPath(pathName);
+            }
+            catch (PathTooLongException ex)
+            {
+                errors.Add("Filepath is too long. Please keep filepath under 240 characters.");
+            }
+
+            try
+            {
+                fileName = Path.GetFileName(fileName);
+                
+            }
+            catch (ArgumentException ex)
+            {
+                errors.Add("Filename is invalid. Please verify that your filename does not contain any of the following characters: \\ / : * ? \" < > |");
+            }
+
+            return errors;
             
         }
 
-        private void DescriptionBox_Enter(object sender, KeyPressEventArgs e)
+        private void DeleteFilesBtn_Click(object sender, EventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            if (MessageBox.Show("Are you sure you want to clear the table?", "",MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
             {
-                AddDescriptionBtn_Click(sender, e);
+                dataGridView1.Rows.Clear();
             }
         }
 
-        private void DisclaimerLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void OutputFilenameBox_Enter(object sender, KeyPressEventArgs e)
         {
-            Disclaimer copyrightForm = new Disclaimer();
-            copyrightForm.ShowDialog(this);
+            if (e.KeyChar == (char)13)
+            {
+                string path = OutputDirBox.Text;
+                string filename = OutputFilenameBox.Text;
+
+                List<string> errors = FileNameHasErrors(path, filename);
+
+                if (errors.Count == 0)
+                {
+                    this.GetNextControl((Control)sender, true).Focus();
+                }
+                else
+                {
+                    DisplayErrors(errors);
+                }
+            }
         }
     }
 }
