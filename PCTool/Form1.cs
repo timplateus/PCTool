@@ -19,7 +19,6 @@ namespace PCTool
         
         public List<string> fileIds = new List<string>{"OVL",  "HAI" , "BXL", "LIM" };
 
-
         public List<String> filepaths = new List<String>();
 
         public string outputfile = "";
@@ -33,26 +32,6 @@ namespace PCTool
         private void Form1_Load(object sender, EventArgs e)
         {
             
-            #region WriteToFile
-            //List<string> output = new List<string> { "ListName | ParamName | Value (OVL) | Value (HAI) |" };
-            //output.Add("----------------------------------------------------------");
-
-            //foreach (Entry entry in baseList)
-            //{
-            //    string newLine = String.Concat(entry.ListName, " | ", entry.ParamName," | ");
-
-            //    foreach (var pVal in entry.Values)
-            //    {
-            //        newLine = String.Concat(newLine, pVal.Value);
-            //        //Console.WriteLine("{0}.{2} ({1})", entry.ParamName, pVal.FileId, pVal.Value);
-            //    }
-
-            //    output.Add(newLine);
-            //    output.Add("----------------------------------------------------------");
-
-            //}
-            //System.IO.File.WriteAllLines("c:/Users/tplateus/Desktop/XML/output.txt", output); 
-            #endregion
         }
 
         private List<Entry> LoadParamList(string filepath, string fileId)
@@ -80,99 +59,6 @@ namespace PCTool
                 }
             }
             return resultList;
-        }
-
-        private List<Entry> AddToList(List<Entry> baseList, List<Entry> listToAdd)
-        {
-            foreach (Entry entry in listToAdd)
-            {
-                bool isNew = false;
-
-                foreach (Entry baseEntry in baseList)
-                {
-                    Entry merged = baseEntry.Merge(entry);
-                    
-                    if (merged != null)
-                    {
-                        isNew = true;
-                    }
-                }
-
-                if (isNew)
-                {
-                    baseList.Add(entry);
-                }
-            }
-
-            return baseList;
-        }
-
-        private void DisplayInExcel(List<Entry> list)
-        {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            int colCount = fileIds.Count + 2; //first 2 rows are listname and paramname => +2
-            int rowCount = list.Count;
-
-            Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-
-            if (xlApp == null)
-            {
-                MessageBox.Show("A working instance of Excel needs to be installed.");
-                return;
-            }
-
-            Excel.Workbook xlWorkbook;
-            Excel.Worksheet xlWorksheet;
-            object missing = System.Reflection.Missing.Value;
-
-            xlWorkbook = xlApp.Workbooks.Add(missing);
-            xlWorksheet = (Excel.Worksheet)xlWorkbook.Worksheets.get_Item(1);
-
-            xlApp.DisplayAlerts = false;
-
-            xlWorksheet.Cells[1, 1] = "ListName";
-            xlWorksheet.Cells[1, 2] = "ParamName";
-            xlWorksheet.Cells[1, 3] = "Value (OVL)";
-            xlWorksheet.Cells[1, 4] = "Value (HAI)";
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                xlWorksheet.Cells[i + 2, 1] = list[i].ListName;
-                xlWorksheet.Cells[i + 2, 2] = list[i].ParamName;
-
-                for (int j = 0; j < fileIds.Count; j++)
-                {
-                    string id = fileIds[j];
-                    ParamValue val = list[i].Values.Find(v => v.FileId == id);
-                    if (val == null)
-                    {
-                        
-                    
-                    }
-                    else
-                    {
-                        xlWorksheet.Cells[i + 2, j + 3] = val.Value;
-                    }
-                }
-            }
-
-            xlWorkbook.SaveAs("C:\\Users\\tplateus\\Desktop\\XML\\output.xlsx", Excel.XlFileFormat.xlWorkbookDefault, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
-            xlWorkbook.Close(true, missing, missing);
-            xlApp.DisplayAlerts = true;
-            xlApp.Quit();
-
-            Marshal.ReleaseComObject(xlWorksheet);
-            Marshal.ReleaseComObject(xlWorkbook);
-            Marshal.ReleaseComObject(xlApp);
-
-            string elapsed = watch.ElapsedMilliseconds.ToString();
-
-            string message = String.Concat("Done in ", elapsed, " ms.");
-
-            MessageBox.Show(message);
-
-
         }
 
         private void DisplayInExcel2(string[,] Matrix)
@@ -465,20 +351,21 @@ namespace PCTool
 
         private void GenerateExcelBtn_Click(object sender, EventArgs e)
         {
-            SetOutputFile(OutputDirBox.Text, OutputFilenameBox.Text);
+            List<string> errors = SetOutputFile(OutputDirBox.Text, OutputFilenameBox.Text);
             filepaths = LoadPaths();
             fileIds = LoadIds();
-
-            if (outputfile == "")
-            {
-                return;
-            }
-
+            
             if (filepaths.Count == 0 || fileIds.Count == 0)
             {
-                DisplayErrors(new List<string> { "At least one file has to be selected." });
+                errors.Add("At least one file has to be selected.");
+            }
+
+            if (errors.Count != 0)
+            {
+                DisplayErrors(errors);
                 return;
             }
+
             List<Entry> baseList = LoadParamList(filepaths[0], fileIds[0]);
 
             for (int i = 1; i < filepaths.Count; i++)
@@ -492,7 +379,7 @@ namespace PCTool
             
         }
 
-        private void AddToGridView(object sender, EventArgs e)
+        private void AddToGridView(object sender, bool goBackTwice)
         {
             List<string> errors = new List<string>();
             List<string> fileIds = new List<string>();
@@ -520,7 +407,15 @@ namespace PCTool
                 dataGridView1.Rows.Add(DescriptionBox.Text, SelectFileLbl.Text);
                 SelectFileLbl.Text = "";
                 DescriptionBox.Text = "";
-                this.GetNextControl((Control)sender, false).Focus();
+                Control prevCtl = GetNextControl((Control)sender, false);
+                if (goBackTwice == true)
+                {
+                    GetNextControl(prevCtl, false).Focus();
+                }
+                else
+                {
+                    prevCtl.Focus();
+                }
             }
             else
             {
@@ -534,7 +429,7 @@ namespace PCTool
         {
             if (e.KeyChar == (char)13)
             {
-                AddToGridView(sender, e);
+                AddToGridView(sender, false);
             }
         }
 
@@ -546,42 +441,10 @@ namespace PCTool
 
         private void AddToListBtn_Click(object sender, EventArgs e)
         {
-            List<string> errors = new List<string>();
-            List<string> fileIds = new List<string>();
-
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)
-            {
-                fileIds.Add(dataGridView1.Rows[i].Cells[0].Value.ToString());
-            }
-
-            if (SelectFileLbl.Text == "")
-            {
-                errors.Add("No file is selected.");
-            }
-            if (DescriptionBox.Text == "")
-            {
-                errors.Add("Description can't be empty.");
-            }
-            if (fileIds.Find(x => x == DescriptionBox.Text) != null)
-            {
-                errors.Add("Description has to be unique.");
-            }
-
-            if (errors.Count == 0)
-            {
-                dataGridView1.Rows.Add(DescriptionBox.Text, SelectFileLbl.Text);
-                SelectFileLbl.Text = "";
-                DescriptionBox.Text = "";
-            }
-            else
-            {
-                DisplayErrors(errors);
-            }
-
-
+            AddToGridView(sender, true);
         }
 
-        private string SelectOutputDir(object sender,EventArgs e)
+        private void BrowseDirBtn_Click(object sender, EventArgs e)
         {
             string selectedPath = "";
 
@@ -590,42 +453,8 @@ namespace PCTool
                 selectedPath = folderBrowserDialog1.SelectedPath;
             }
 
-            return selectedPath;
-        }
+            OutputDirBox.Text = selectedPath;
 
-        private void BrowseDirBtn_Click(object sender, EventArgs e)
-        {
-            outputfile = SelectOutputDir(sender, e);
-
-            OutputDirBox.Text = outputfile;
-
-        }
-
-        private List<string> FileNameHasErrors(string pathName,string fileName )
-        {
-            List<string> errors = new List<string>();
-
-            try
-            {
-                pathName = Path.GetFullPath(pathName);
-            }
-            catch (PathTooLongException ex)
-            {
-                errors.Add("Filepath is too long. Please keep filepath under 240 characters.");
-            }
-
-            try
-            {
-                fileName = Path.GetFileName(fileName);
-                
-            }
-            catch (ArgumentException ex)
-            {
-                errors.Add("Filename is invalid. Please verify that your filename does not contain any of the following characters: \\ / : * ? \" < > |");
-            }
-
-            return errors;
-            
         }
 
         private void DeleteFilesBtn_Click(object sender, EventArgs e)
@@ -640,23 +469,11 @@ namespace PCTool
         {
             if (e.KeyChar == (char)13)
             {
-                string path = OutputDirBox.Text;
-                string filename = OutputFilenameBox.Text;
-
-                List<string> errors = FileNameHasErrors(path, filename);
-
-                if (errors.Count == 0)
-                {
-                    this.GetNextControl((Control)sender, true).Focus();
-                }
-                else
-                {
-                    DisplayErrors(errors);
-                }
+                this.GetNextControl((Control)sender, true).Focus();
             }
         }
 
-        private void SetOutputFile(string outputDirectory, string outputFilename)
+        private List<string> SetOutputFile(string outputDirectory, string outputFilename)
         {
             List<string> errors = new List<string>();
             List<string> invalidChars = new List<string> { @"<", @">", @":", @"/", @"\", @"|", @"?", @"*" };
@@ -665,6 +482,12 @@ namespace PCTool
             if (outputDirectory == "")
             {
                 errors.Add("Output directory cannot be empty.");
+            }
+
+            //Check for empty filename
+            if (outputFilename == "")
+            {
+                errors.Add("Output filename cannot be empty.");
             }
             //Check that filename does not use an invalid character.
             foreach (string character in invalidChars)
@@ -675,12 +498,10 @@ namespace PCTool
             if (errors.Count == 0)
             {
                 outputfile = outputDirectory + @"\" + outputFilename;
+            
             }
-            else
-            {
-                DisplayErrors(errors);
-                return;
-            }
+
+            return errors;
         }
     }
 }

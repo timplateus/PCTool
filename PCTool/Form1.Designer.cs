@@ -47,9 +47,9 @@
             this.DeleteFilesBtn = new System.Windows.Forms.Button();
             this.SelectFileBtn = new System.Windows.Forms.Button();
             this.InputFileLbl = new System.Windows.Forms.Label();
+            this.DisclaimerLbl = new System.Windows.Forms.LinkLabel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.DisclaimerLbl = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -103,7 +103,7 @@
             this.DescriptionBox.Location = new System.Drawing.Point(208, 160);
             this.DescriptionBox.Name = "DescriptionBox";
             this.DescriptionBox.Size = new System.Drawing.Size(660, 29);
-            this.DescriptionBox.TabIndex = 1;
+            this.DescriptionBox.TabIndex = 4;
             this.DescriptionBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
             // 
             // DescriptionLbl
@@ -137,7 +137,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(1005, 394);
-            this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.TabIndex = 8;
             this.dataGridView1.TabStop = false;
             // 
             // FileId
@@ -163,7 +163,7 @@
             this.GenerateExcelBtn.Margin = new System.Windows.Forms.Padding(3, 3, 10, 3);
             this.GenerateExcelBtn.Name = "GenerateExcelBtn";
             this.GenerateExcelBtn.Size = new System.Drawing.Size(141, 44);
-            this.GenerateExcelBtn.TabIndex = 13;
+            this.GenerateExcelBtn.TabIndex = 6;
             this.GenerateExcelBtn.Text = "Generate Excel";
             this.GenerateExcelBtn.UseVisualStyleBackColor = true;
             this.GenerateExcelBtn.Click += new System.EventHandler(this.GenerateExcelBtn_Click);
@@ -178,7 +178,7 @@
             this.AddtoListBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.AddtoListBtn.Name = "AddtoListBtn";
             this.AddtoListBtn.Size = new System.Drawing.Size(124, 30);
-            this.AddtoListBtn.TabIndex = 11;
+            this.AddtoListBtn.TabIndex = 5;
             this.AddtoListBtn.Text = "Add to list";
             this.AddtoListBtn.UseVisualStyleBackColor = true;
             this.AddtoListBtn.Click += new System.EventHandler(this.AddToListBtn_Click);
@@ -219,7 +219,7 @@
             this.OutputDirBox.Location = new System.Drawing.Point(208, 10);
             this.OutputDirBox.Name = "OutputDirBox";
             this.OutputDirBox.Size = new System.Drawing.Size(660, 29);
-            this.OutputDirBox.TabIndex = 1;
+            this.OutputDirBox.TabIndex = 0;
             this.OutputDirBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
             // 
             // BrowseDirBtn
@@ -232,7 +232,7 @@
             this.BrowseDirBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.BrowseDirBtn.Name = "BrowseDirBtn";
             this.BrowseDirBtn.Size = new System.Drawing.Size(124, 30);
-            this.BrowseDirBtn.TabIndex = 11;
+            this.BrowseDirBtn.TabIndex = 1;
             this.BrowseDirBtn.Text = "Browse";
             this.BrowseDirBtn.UseVisualStyleBackColor = true;
             this.BrowseDirBtn.Click += new System.EventHandler(this.BrowseDirBtn_Click);
@@ -259,7 +259,7 @@
             this.OutputFilenameBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.OutputFilenameBox.Name = "OutputFilenameBox";
             this.OutputFilenameBox.Size = new System.Drawing.Size(612, 29);
-            this.OutputFilenameBox.TabIndex = 1;
+            this.OutputFilenameBox.TabIndex = 2;
             this.OutputFilenameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OutputFilenameBox_Enter);
             // 
             // ExtensionLbl
@@ -281,7 +281,7 @@
             this.DeleteFilesBtn.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.DeleteFilesBtn.Name = "DeleteFilesBtn";
             this.DeleteFilesBtn.Size = new System.Drawing.Size(142, 44);
-            this.DeleteFilesBtn.TabIndex = 12;
+            this.DeleteFilesBtn.TabIndex = 7;
             this.DeleteFilesBtn.Text = "Clear table";
             this.DeleteFilesBtn.UseVisualStyleBackColor = true;
             this.DeleteFilesBtn.Click += new System.EventHandler(this.DeleteFilesBtn_Click);
@@ -297,7 +297,7 @@
             this.SelectFileBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.SelectFileBtn.Name = "SelectFileBtn";
             this.SelectFileBtn.Size = new System.Drawing.Size(124, 30);
-            this.SelectFileBtn.TabIndex = 0;
+            this.SelectFileBtn.TabIndex = 3;
             this.SelectFileBtn.Text = "Select file";
             this.SelectFileBtn.UseVisualStyleBackColor = true;
             this.SelectFileBtn.Click += new System.EventHandler(this.SelectFileBtn_Click);
@@ -316,12 +316,6 @@
             this.InputFileLbl.Text = "Name input file:";
             this.InputFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.DefaultExt = "xml";
-            this.openFileDialog1.Filter = "XML files (*.xml) | *.xml";
-            this.openFileDialog1.Tag = "";
-            // 
             // DisclaimerLbl
             // 
             this.DisclaimerLbl.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -333,6 +327,12 @@
             this.DisclaimerLbl.TabStop = true;
             this.DisclaimerLbl.Text = "© 2018";
             this.DisclaimerLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DisclaimerLbl_LinkClicked);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "xml";
+            this.openFileDialog1.Filter = "XML files (*.xml) | *.xml";
+            this.openFileDialog1.Tag = "";
             // 
             // Form1
             // 
@@ -346,6 +346,7 @@
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(525, 200);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ParamCompare Tool";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
