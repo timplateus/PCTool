@@ -177,6 +177,8 @@ namespace PCTool
 
         private void DisplayInExcel2(string[,] Matrix)
         {
+            Cursor = Cursors.WaitCursor;
+
             System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
 
             Excel.Application app = null;
@@ -301,7 +303,7 @@ namespace PCTool
                     string elapsed = watch.Elapsed.Seconds.ToString();
                     string message = "The output file '" + OutputFilenameBox.Text + ".xlsx' was succesfully created at " + OutputDirBox.Text;
                     message = message + Environment.NewLine + "Elapsed time: " + elapsed + "s.";
-                    
+                    Cursor = Cursors.Arrow;
                     MessageBox.Show(message);
                 }
                 else
@@ -311,6 +313,7 @@ namespace PCTool
             }
             finally
             {
+                Cursor = Cursors.Arrow;
                 if (rows != null) Marshal.ReleaseComObject(rows);
                 if (range != null) Marshal.ReleaseComObject(range);
                 if (sheet != null) Marshal.ReleaseComObject(sheet);
@@ -318,6 +321,7 @@ namespace PCTool
                 if (book != null) Marshal.ReleaseComObject(book);
                 if (books != null) Marshal.ReleaseComObject(books);
                 if (app != null) Marshal.ReleaseComObject(app);
+
 
                 //Don't think these are needed anymore since they are part of inner try. Is this inner finally always reached?
                 //if (openBooks != null) Marshal.ReleaseComObject(openBooks); 

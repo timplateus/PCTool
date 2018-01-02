@@ -298,7 +298,7 @@
             this.SelectFileBtn.Name = "SelectFileBtn";
             this.SelectFileBtn.Size = new System.Drawing.Size(124, 30);
             this.SelectFileBtn.TabIndex = 0;
-            this.SelectFileBtn.Text = "Select File";
+            this.SelectFileBtn.Text = "Select file";
             this.SelectFileBtn.UseVisualStyleBackColor = true;
             this.SelectFileBtn.Click += new System.EventHandler(this.SelectFileBtn_Click);
             // 
