@@ -22,7 +22,7 @@ namespace PCTool
 
         public List<String> filepaths = new List<String>();
 
-        public string outputfile = @"C:\Users\tplateus\Desktop\XML\output.xlsx";
+        public string outputfile = "";
         
 
         public Form1()
@@ -215,6 +215,10 @@ namespace PCTool
                         Marshal.ReleaseComObject(openBook);
                     }
                 }
+                catch
+                {
+
+                }
                 finally
                 {
                     if (openBooks != null) Marshal.ReleaseComObject(openBooks);
@@ -234,7 +238,7 @@ namespace PCTool
 
 
                     books = app.Workbooks;
-                    book = books.Open(@"C:\Users\tplateus\Documents\Custom Office Templates\templatev1.xltx");
+                    book = books.Add();
                     sheets = book.Sheets;
                     sheet = sheets.Item[1];
                     range = sheet.Cells[1, 1];
@@ -289,13 +293,13 @@ namespace PCTool
 
                     app.DisplayAlerts = false;
                     object missing = System.Reflection.Missing.Value;
-                    book.SaveAs("C:\\Users\\tplateus\\Desktop\\XML\\output.xlsx", Excel.XlFileFormat.xlWorkbookDefault, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
+                    book.SaveAs(outputfile, Excel.XlFileFormat.xlWorkbookDefault, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
                     book.Close(true, missing, missing);
                     app.DisplayAlerts = true;
                     app.Quit();
 
                     string elapsed = watch.Elapsed.Seconds.ToString();
-                    string message = "The output file 'output.xlsx' was succesfully created at C:/Users/tplateus/Desktop/XML.";
+                    string message = "The output file '" + OutputFilenameBox.Text + ".xlsx' was succesfully created at " + OutputDirBox.Text;
                     message = message + Environment.NewLine + "Elapsed time: " + elapsed + "s.";
                     
                     MessageBox.Show(message);
@@ -457,9 +461,15 @@ namespace PCTool
 
         private void GenerateExcelBtn_Click(object sender, EventArgs e)
         {
-            //System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            SetOutputFile(OutputDirBox.Text, OutputFilenameBox.Text);
             filepaths = LoadPaths();
             fileIds = LoadIds();
+
+            if (outputfile == "")
+            {
+                return;
+            }
+
             if (filepaths.Count == 0 || fileIds.Count == 0)
             {
                 DisplayErrors(new List<string> { "At least one file has to be selected." });
@@ -567,7 +577,6 @@ namespace PCTool
 
         }
 
-        //Front-end behaviour functions
         private string SelectOutputDir(object sender,EventArgs e)
         {
             string selectedPath = "";
@@ -582,9 +591,10 @@ namespace PCTool
 
         private void BrowseDirBtn_Click(object sender, EventArgs e)
         {
-            string selectedPath = SelectOutputDir(sender, e);
+            outputfile = SelectOutputDir(sender, e);
 
-            OutputDirBox.Text = selectedPath;
+            OutputDirBox.Text = outputfile;
+
         }
 
         private List<string> FileNameHasErrors(string pathName,string fileName )
@@ -639,6 +649,33 @@ namespace PCTool
                 {
                     DisplayErrors(errors);
                 }
+            }
+        }
+
+        private void SetOutputFile(string outputDirectory, string outputFilename)
+        {
+            List<string> errors = new List<string>();
+            List<string> invalidChars = new List<string> { @"<", @">", @":", @"/", @"\", @"|", @"?", @"*" };
+            
+            //Check for empty directory.
+            if (outputDirectory == "")
+            {
+                errors.Add("Output directory cannot be empty.");
+            }
+            //Check that filename does not use an invalid character.
+            foreach (string character in invalidChars)
+            {
+                if (outputFilename.Contains(character)) errors.Add("Filename is invalid. Please verify that your filename does not contain any of the following characters: \\ / : * ? \" < > |");
+            }
+
+            if (errors.Count == 0)
+            {
+                outputfile = outputDirectory + @"\" + outputFilename;
+            }
+            else
+            {
+                DisplayErrors(errors);
+                return;
             }
         }
     }

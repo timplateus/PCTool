@@ -47,14 +47,14 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(451, 400);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(591, 464);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // OKbtn
             // 
             this.OKbtn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.OKbtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OKbtn.Location = new System.Drawing.Point(166, 360);
+            this.OKbtn.Location = new System.Drawing.Point(236, 424);
             this.OKbtn.Name = "OKbtn";
             this.OKbtn.Size = new System.Drawing.Size(119, 30);
             this.OKbtn.TabIndex = 0;
@@ -66,10 +66,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(10, 20, 0, 10);
-            this.label1.Size = new System.Drawing.Size(445, 350);
+            this.label1.Size = new System.Drawing.Size(585, 414);
             this.label1.TabIndex = 1;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -77,7 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(451, 400);
+            this.ClientSize = new System.Drawing.Size(591, 464);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Disclaimer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -35,10 +35,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.FileId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Filepath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeleteFilesBtn = new System.Windows.Forms.Button();
             this.GenerateExcelBtn = new System.Windows.Forms.Button();
             this.AddtoListBtn = new System.Windows.Forms.Button();
-            this.SelectFileBtn = new System.Windows.Forms.Button();
             this.SelectFileLbl = new System.Windows.Forms.Label();
             this.OutputDirLbl = new System.Windows.Forms.Label();
             this.OutputDirBox = new System.Windows.Forms.TextBox();
@@ -46,9 +44,12 @@
             this.OutputFilenameLbl = new System.Windows.Forms.Label();
             this.OutputFilenameBox = new System.Windows.Forms.TextBox();
             this.ExtensionLbl = new System.Windows.Forms.Label();
+            this.DeleteFilesBtn = new System.Windows.Forms.Button();
+            this.SelectFileBtn = new System.Windows.Forms.Button();
+            this.InputFileLbl = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.InputFileLbl = new System.Windows.Forms.Label();
+            this.DisclaimerLbl = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -75,6 +76,7 @@
             this.tableLayoutPanel1.Controls.Add(this.DeleteFilesBtn, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.SelectFileBtn, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.InputFileLbl, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.DisclaimerLbl, 1, 6);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -152,19 +154,6 @@
             this.Filepath.Name = "Filepath";
             this.Filepath.ReadOnly = true;
             // 
-            // DeleteFilesBtn
-            // 
-            this.DeleteFilesBtn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DeleteFilesBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteFilesBtn.Location = new System.Drawing.Point(10, 603);
-            this.DeleteFilesBtn.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.DeleteFilesBtn.Name = "DeleteFilesBtn";
-            this.DeleteFilesBtn.Size = new System.Drawing.Size(142, 44);
-            this.DeleteFilesBtn.TabIndex = 12;
-            this.DeleteFilesBtn.Text = "Delete rows";
-            this.DeleteFilesBtn.UseVisualStyleBackColor = true;
-            this.DeleteFilesBtn.Click += new System.EventHandler(this.DeleteFilesBtn_Click);
-            // 
             // GenerateExcelBtn
             // 
             this.GenerateExcelBtn.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -184,7 +173,7 @@
             this.AddtoListBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddtoListBtn.Font = new System.Drawing.Font("Microsoft YaHei UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddtoListBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddtoListBtn.Location = new System.Drawing.Point(891, 160);
             this.AddtoListBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.AddtoListBtn.Name = "AddtoListBtn";
@@ -193,22 +182,6 @@
             this.AddtoListBtn.Text = "Add to list";
             this.AddtoListBtn.UseVisualStyleBackColor = true;
             this.AddtoListBtn.Click += new System.EventHandler(this.AddToListBtn_Click);
-            // 
-            // SelectFileBtn
-            // 
-            this.SelectFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SelectFileBtn.AutoSize = true;
-            this.SelectFileBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SelectFileBtn.Location = new System.Drawing.Point(891, 110);
-            this.SelectFileBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
-            this.SelectFileBtn.Name = "SelectFileBtn";
-            this.SelectFileBtn.Size = new System.Drawing.Size(124, 30);
-            this.SelectFileBtn.TabIndex = 0;
-            this.SelectFileBtn.Text = "Select File";
-            this.SelectFileBtn.UseVisualStyleBackColor = true;
-            this.SelectFileBtn.Click += new System.EventHandler(this.SelectFileBtn_Click);
             // 
             // SelectFileLbl
             // 
@@ -254,7 +227,7 @@
             this.BrowseDirBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseDirBtn.Font = new System.Drawing.Font("Microsoft YaHei UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BrowseDirBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BrowseDirBtn.Location = new System.Drawing.Point(891, 10);
             this.BrowseDirBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.BrowseDirBtn.Name = "BrowseDirBtn";
@@ -300,11 +273,34 @@
             this.ExtensionLbl.TabIndex = 14;
             this.ExtensionLbl.Text = ".xlsx";
             // 
-            // openFileDialog1
+            // DeleteFilesBtn
             // 
-            this.openFileDialog1.DefaultExt = "xml";
-            this.openFileDialog1.Filter = "XML files (*.xml) | *.xml";
-            this.openFileDialog1.Tag = "";
+            this.DeleteFilesBtn.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DeleteFilesBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteFilesBtn.Location = new System.Drawing.Point(10, 603);
+            this.DeleteFilesBtn.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.DeleteFilesBtn.Name = "DeleteFilesBtn";
+            this.DeleteFilesBtn.Size = new System.Drawing.Size(142, 44);
+            this.DeleteFilesBtn.TabIndex = 12;
+            this.DeleteFilesBtn.Text = "Clear table";
+            this.DeleteFilesBtn.UseVisualStyleBackColor = true;
+            this.DeleteFilesBtn.Click += new System.EventHandler(this.DeleteFilesBtn_Click);
+            // 
+            // SelectFileBtn
+            // 
+            this.SelectFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SelectFileBtn.AutoSize = true;
+            this.SelectFileBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectFileBtn.Location = new System.Drawing.Point(891, 110);
+            this.SelectFileBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
+            this.SelectFileBtn.Name = "SelectFileBtn";
+            this.SelectFileBtn.Size = new System.Drawing.Size(124, 30);
+            this.SelectFileBtn.TabIndex = 0;
+            this.SelectFileBtn.Text = "Select File";
+            this.SelectFileBtn.UseVisualStyleBackColor = true;
+            this.SelectFileBtn.Click += new System.EventHandler(this.SelectFileBtn_Click);
             // 
             // InputFileLbl
             // 
@@ -319,6 +315,24 @@
             this.InputFileLbl.TabIndex = 10;
             this.InputFileLbl.Text = "Name input file:";
             this.InputFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "xml";
+            this.openFileDialog1.Filter = "XML files (*.xml) | *.xml";
+            this.openFileDialog1.Tag = "";
+            // 
+            // DisclaimerLbl
+            // 
+            this.DisclaimerLbl.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.DisclaimerLbl.AutoSize = true;
+            this.DisclaimerLbl.Location = new System.Drawing.Point(477, 664);
+            this.DisclaimerLbl.Name = "DisclaimerLbl";
+            this.DisclaimerLbl.Size = new System.Drawing.Size(70, 22);
+            this.DisclaimerLbl.TabIndex = 15;
+            this.DisclaimerLbl.TabStop = true;
+            this.DisclaimerLbl.Text = "© 2018";
+            this.DisclaimerLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DisclaimerLbl_LinkClicked);
             // 
             // Form1
             // 
@@ -362,6 +376,7 @@
         private System.Windows.Forms.Label ExtensionLbl;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label InputFileLbl;
+        private System.Windows.Forms.LinkLabel DisclaimerLbl;
     }
 }
 
