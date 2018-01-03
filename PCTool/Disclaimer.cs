@@ -10,8 +10,16 @@ using System.Windows.Forms;
 
 namespace PCTool
 {
+    /// <summary>
+    ///     A copyright disclaimer for the usage of this program. Will be invoked when the user
+    ///     clicks DisclaimerLbl.
+    /// </summary>
+    /// <remarks> Tplateus, 3/01/2018. </remarks>
     public partial class Disclaimer : Form
     {
+
+        /// <summary> Default constructor. </summary>
+        /// <remarks> Tplateus, 3/01/2018. </remarks>
         public Disclaimer()
         {
             InitializeComponent();
