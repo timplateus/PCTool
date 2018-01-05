@@ -1,6 +1,6 @@
-﻿// file:	form1.cs
+﻿// file:	MainForm.cs
 //
-// summary:	Implements the form 1 class
+// summary:	Implements the MainForm class
 
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices; // to release COM objects using Marshal
@@ -20,7 +21,7 @@ namespace PCTool
 {
     /// <summary> Main form. </summary>
     /// <remarks> Tplateus, 3/01/2018. </remarks>
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         
         /// <summary> The full pathname of the outputfile. Will be set using the method SetOutputFile </summary>
@@ -29,7 +30,7 @@ namespace PCTool
 
         /// <summary> Default constructor. </summary>
         /// <remarks> Tplateus, 3/01/2018. </remarks>
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -43,29 +44,39 @@ namespace PCTool
         /// <returns> The list of entries. </returns>
         private List<Entry> LoadParamList(string filepath, string fileId)
         {
-            List<XElement> loadedXml = XElement.Load(filepath).Descendants("paramList").ToList();
 
-            List<Entry> resultList = new List<Entry>();
-
-            foreach (XElement xList in loadedXml)
+            try
             {
-                string setName = xList.Element("setName").Value;
-                string listName = xList.Element("paramListName").Value;
+                List<XElement> loadedXml = XElement.Load(filepath).Descendants("paramList").ToList();
 
-                List<XElement> xEntries = xList.Descendants("paramListEntry").ToList();
-                foreach (XElement xEntry in xEntries)
+                List<Entry> resultList = new List<Entry>();
+
+                foreach (XElement xList in loadedXml)
                 {
-                    string paramName = xEntry.Element("paramName").Value;
-                    string configName = xEntry.Element("configName").Value;
-                    string value = System.Net.WebUtility.HtmlDecode(xEntry.Element("paramValue").Value);
+                    string setName = xList.Element("setName").Value;
+                    string listName = xList.Element("paramListName").Value;
 
-                    Entry entry = new Entry(setName, listName, paramName, configName);
-                    entry.AddValue(fileId, value);
+                    List<XElement> xEntries = xList.Descendants("paramListEntry").ToList();
+                    foreach (XElement xEntry in xEntries)
+                    {
+                        string paramName = xEntry.Element("paramName").Value;
+                        string configName = xEntry.Element("configName").Value;
+                        string value = System.Net.WebUtility.HtmlDecode(xEntry.Element("paramValue").Value);
 
-                    resultList.Add(entry);
+                        Entry entry = new Entry(setName, listName, paramName, configName);
+                        entry.AddValue(fileId, value);
+
+                        resultList.Add(entry);
+                    }
                 }
+                return resultList;
             }
-            return resultList;
+            catch (XmlException xmlEx)
+            {
+                string message = "The following file is not valid XML:" + Environment.NewLine + filepath + "." + Environment.NewLine + Environment.NewLine + xmlEx.Message;
+                Exception e = new Exception(message);
+                throw e;
+            }
         }
 
         /// <summary> Transform list of entries into 2D array. </summary>
@@ -252,6 +263,12 @@ namespace PCTool
             }
             MessageBox.Show(errorMessage, "Attention", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
+        private void DisplayErrors(string error)
+        {
+            string errorMessage = "The following error has occured:" + Environment.NewLine + Environment.NewLine + error;
+
+            MessageBox.Show(errorMessage, "Attention", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
 
         /// <summary> Adds path and fileId to the grid view. </summary>
         /// <remarks> Tplateus, 3/01/2018. </remarks>
@@ -321,6 +338,7 @@ namespace PCTool
 
             Excel.Range range = null;
             Excel.Range rows = null;
+            Excel.Range cols = null;
 
             List<string> errors = new List<string>();
 
@@ -382,18 +400,29 @@ namespace PCTool
 
                     rows = range.Rows;
 
-                    for (int iRow = 2; iRow <= rowCount; iRow++)
+                    cols = range.Columns;
+
+                    //Set column widths to 300 pixels for each column in range.
+                    for (int iCol = 1; iCol <= columnCount; iCol++) //COMObject has a 1-based index.
                     {
-                        Excel.Range row = rows.Item[iRow]; //Index start van 1. Eerste rij = headers.
+                        Excel.Range column = cols[iCol];
+                        column.ColumnWidth = 32.56; //Translates to 300 pixels. Verify in Excel.
+
+                        if (column != null) Marshal.ReleaseComObject(column);
+                    }
+
+                    for (int iRow = 2; iRow <= rowCount; iRow++) // COMObject index starts at 1, not 0. First row is ignored (headers) => iRow = 2
+                    {
+                        Excel.Range row = rows.Item[iRow]; 
 
                         object[,] objRow = row.Value2;
-                        List<string> listRow = objRow.Cast<string>().ToList();
+                        List<string> listRow = objRow.Cast<string>().ToList(); //To utilize methods like findAll, the array is transformed to a list.
 
-                        for (int i = 3; i < listRow.Count; i++)
+                        for (int i = 3; i < listRow.Count; i++) //First 3 columns are ignored since they dont have values (only ids).
                         {
                             string cellValue = listRow[i];
-                            List<string> allSameValues = listRow.FindAll(x => x == cellValue);
-                            List<string> allValuesWithNotFound = listRow.FindAll(x => x == "!NOT_FOUND");
+                            List<string> allSameValues = listRow.FindAll(x => x == cellValue); //Search all cells with value == current cell value. If all values in the row are the same, its count should be the listRowCount -3 (ids).
+                            List<string> allValuesWithNotFound = listRow.FindAll(x => x == "!NOT_FOUND"); //!NOT_FOUND value is manually added in the 'TransformInto2DArray' method.
 
                             if (allValuesWithNotFound.Count == 0)
                             {
@@ -438,6 +467,7 @@ namespace PCTool
             }
             finally
             {
+                if (cols != null) Marshal.ReleaseComObject(cols);
                 if (rows != null) { Marshal.ReleaseComObject(rows); Console.WriteLine("COMObject 'rows' released."); }
                 if (range != null) { Marshal.ReleaseComObject(range); Console.WriteLine("COMObject 'range' released."); }
                 if (sheet != null) { Marshal.ReleaseComObject(sheet); Console.WriteLine("COMObject 'sheet' released."); }
@@ -481,17 +511,25 @@ namespace PCTool
                 return;
             }
 
-            //Create a 'baselist' of entries (1 file), then merge all other files into this list.
-            List<Entry> baseList = LoadParamList(filepaths[0], fileIds[0]);
-
-            for (int i = 1; i < filepaths.Count; i++)
+            try
             {
-                List<Entry> newList = LoadParamList(filepaths[i], fileIds[i]);
-                baseList = MergeLists(baseList, newList);
-            }
+                //Create a 'baselist' of entries (1 file), then merge all other files into this list.
+                List<Entry> baseList = LoadParamList(filepaths[0], fileIds[0]);
 
-            string[,] allCells = TransformInto2DArray(baseList, fileIds);
-            DisplayInExcel2(allCells);
+                for (int i = 1; i < filepaths.Count; i++)
+                {
+                    List<Entry> newList = LoadParamList(filepaths[i], fileIds[i]);
+                    baseList = MergeLists(baseList, newList);
+                }
+
+                string[,] allCells = TransformInto2DArray(baseList, fileIds);
+                DisplayInExcel2(allCells);
+            }
+            catch (Exception e)
+            {
+                DisplayErrors(e.Message);
+                return;
+            }
 
         }
 
@@ -671,7 +709,28 @@ namespace PCTool
                 OutputDirBox.Text = "";
             }
 
-        } 
+        }
         #endregion
+
+        #region Todo
+
+        /// <summary> Check if 'list1' has same SetName as 'list2'. </summary>
+        /// <remarks> Tplateus, 4/01/2018. </remarks>
+        /// <param name="list1"> The first list. </param>
+        /// <param name="list2"> The second list. </param>
+        /// <returns> True if same set, false if not. </returns>
+        private bool IsSameSet(List<Entry> list1, List<Entry> list2)
+        {
+            bool isSameSet = false;
+
+            if (list1[0].SetName == list1[0].SetName)
+            {
+                isSameSet = true;
+            }
+            return isSameSet;
+        }
+
+        #endregion
+
     }
 }
