@@ -710,6 +710,18 @@ namespace PCTool
             }
 
         }
+
+        /// <summary> Event handler. Called by MainForm for key up events. Clicks GenerateExcelBtn if F5 is pressed. </summary>
+        /// <remarks> Tplateus, 5/01/2018. </remarks>
+        /// <param name="sender"> Source of the event. </param>
+        /// <param name="e">      Key event information. </param>
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                GenerateExcelBtn_Click(sender, e);
+            }
+        }
         #endregion
 
         #region Todo
@@ -732,5 +744,6 @@ namespace PCTool
 
         #endregion
 
+       
     }
 }
