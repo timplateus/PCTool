@@ -519,6 +519,15 @@ namespace PCTool
                 for (int i = 1; i < filepaths.Count; i++)
                 {
                     List<Entry> newList = LoadParamList(filepaths[i], fileIds[i]);
+
+                    if (!IsSameSet(baseList,newList))
+                    {
+                        string message = "The selected files have different setnames." + Environment.NewLine + "Comparing files that come from different sets can take considerably longer. Do you want to continue?";
+                        if (MessageBox.Show(message, "Attention!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
                     baseList = MergeLists(baseList, newList);
                 }
 
@@ -735,13 +744,13 @@ namespace PCTool
         {
             bool isSameSet = false;
 
-            if (list1[0].SetName == list1[0].SetName)
+            if (list1[0].SetName == list2[0].SetName)
             {
                 isSameSet = true;
             }
             return isSameSet;
         }
-
+      
         #endregion
 
        

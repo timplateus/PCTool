@@ -92,7 +92,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1020, 652);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1032, 658);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // DescriptionBox
@@ -100,9 +100,9 @@
             this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.DescriptionBox, 2);
             this.DescriptionBox.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescriptionBox.Location = new System.Drawing.Point(207, 160);
+            this.DescriptionBox.Location = new System.Drawing.Point(209, 160);
             this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(657, 29);
+            this.DescriptionBox.Size = new System.Drawing.Size(664, 29);
             this.DescriptionBox.TabIndex = 4;
             this.DescriptionBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
             // 
@@ -115,7 +115,7 @@
             this.DescriptionLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.DescriptionLbl.Name = "DescriptionLbl";
             this.DescriptionLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.DescriptionLbl.Size = new System.Drawing.Size(191, 42);
+            this.DescriptionLbl.Size = new System.Drawing.Size(193, 42);
             this.DescriptionLbl.TabIndex = 10;
             this.DescriptionLbl.Text = "Description:";
             this.DescriptionLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -136,7 +136,7 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1000, 394);
+            this.dataGridView1.Size = new System.Drawing.Size(1012, 394);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.TabStop = false;
             // 
@@ -159,10 +159,10 @@
             this.GenerateExcelBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GenerateExcelBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GenerateExcelBtn.ForeColor = System.Drawing.Color.DarkGreen;
-            this.GenerateExcelBtn.Location = new System.Drawing.Point(870, 603);
+            this.GenerateExcelBtn.Location = new System.Drawing.Point(879, 603);
             this.GenerateExcelBtn.Margin = new System.Windows.Forms.Padding(3, 3, 10, 3);
             this.GenerateExcelBtn.Name = "GenerateExcelBtn";
-            this.GenerateExcelBtn.Size = new System.Drawing.Size(140, 44);
+            this.GenerateExcelBtn.Size = new System.Drawing.Size(143, 44);
             this.GenerateExcelBtn.TabIndex = 6;
             this.GenerateExcelBtn.Text = "Generate Excel";
             this.GenerateExcelBtn.UseVisualStyleBackColor = true;
@@ -174,10 +174,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AddtoListBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddtoListBtn.Location = new System.Drawing.Point(887, 160);
+            this.AddtoListBtn.Location = new System.Drawing.Point(896, 160);
             this.AddtoListBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.AddtoListBtn.Name = "AddtoListBtn";
-            this.AddtoListBtn.Size = new System.Drawing.Size(123, 30);
+            this.AddtoListBtn.Size = new System.Drawing.Size(126, 30);
             this.AddtoListBtn.TabIndex = 5;
             this.AddtoListBtn.Text = "Add to list";
             this.AddtoListBtn.UseVisualStyleBackColor = true;
@@ -189,11 +189,11 @@
             this.SelectFileLbl.AutoSize = true;
             this.SelectFileLbl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tableLayoutPanel1.SetColumnSpan(this.SelectFileLbl, 2);
-            this.SelectFileLbl.Location = new System.Drawing.Point(207, 110);
+            this.SelectFileLbl.Location = new System.Drawing.Point(209, 110);
             this.SelectFileLbl.Margin = new System.Windows.Forms.Padding(3);
             this.SelectFileLbl.Name = "SelectFileLbl";
             this.SelectFileLbl.Padding = new System.Windows.Forms.Padding(5, 2, 0, 3);
-            this.SelectFileLbl.Size = new System.Drawing.Size(657, 29);
+            this.SelectFileLbl.Size = new System.Drawing.Size(664, 29);
             this.SelectFileLbl.TabIndex = 9;
             this.SelectFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -206,7 +206,7 @@
             this.OutputDirLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.OutputDirLbl.Name = "OutputDirLbl";
             this.OutputDirLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.OutputDirLbl.Size = new System.Drawing.Size(191, 42);
+            this.OutputDirLbl.Size = new System.Drawing.Size(193, 42);
             this.OutputDirLbl.TabIndex = 10;
             this.OutputDirLbl.Text = "Output directory:";
             this.OutputDirLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -216,9 +216,9 @@
             this.OutputDirBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.OutputDirBox, 2);
             this.OutputDirBox.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputDirBox.Location = new System.Drawing.Point(207, 10);
+            this.OutputDirBox.Location = new System.Drawing.Point(209, 10);
             this.OutputDirBox.Name = "OutputDirBox";
-            this.OutputDirBox.Size = new System.Drawing.Size(657, 29);
+            this.OutputDirBox.Size = new System.Drawing.Size(664, 29);
             this.OutputDirBox.TabIndex = 0;
             this.OutputDirBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
             this.OutputDirBox.Leave += new System.EventHandler(this.OutputDirBox_Leave);
@@ -229,10 +229,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BrowseDirBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BrowseDirBtn.Location = new System.Drawing.Point(887, 10);
+            this.BrowseDirBtn.Location = new System.Drawing.Point(896, 10);
             this.BrowseDirBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.BrowseDirBtn.Name = "BrowseDirBtn";
-            this.BrowseDirBtn.Size = new System.Drawing.Size(123, 30);
+            this.BrowseDirBtn.Size = new System.Drawing.Size(126, 30);
             this.BrowseDirBtn.TabIndex = 1;
             this.BrowseDirBtn.Text = "Browse";
             this.BrowseDirBtn.UseVisualStyleBackColor = true;
@@ -247,7 +247,7 @@
             this.OutputFilenameLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.OutputFilenameLbl.Name = "OutputFilenameLbl";
             this.OutputFilenameLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.OutputFilenameLbl.Size = new System.Drawing.Size(191, 42);
+            this.OutputFilenameLbl.Size = new System.Drawing.Size(193, 42);
             this.OutputFilenameLbl.TabIndex = 10;
             this.OutputFilenameLbl.Text = "Name output file:";
             this.OutputFilenameLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -256,10 +256,10 @@
             // 
             this.OutputFilenameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.OutputFilenameBox.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputFilenameBox.Location = new System.Drawing.Point(207, 60);
+            this.OutputFilenameBox.Location = new System.Drawing.Point(209, 60);
             this.OutputFilenameBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.OutputFilenameBox.Name = "OutputFilenameBox";
-            this.OutputFilenameBox.Size = new System.Drawing.Size(609, 29);
+            this.OutputFilenameBox.Size = new System.Drawing.Size(616, 29);
             this.OutputFilenameBox.TabIndex = 2;
             this.OutputFilenameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OutputFilenameBox_Enter);
             // 
@@ -267,7 +267,7 @@
             // 
             this.ExtensionLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ExtensionLbl.AutoSize = true;
-            this.ExtensionLbl.Location = new System.Drawing.Point(816, 64);
+            this.ExtensionLbl.Location = new System.Drawing.Point(825, 64);
             this.ExtensionLbl.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.ExtensionLbl.Name = "ExtensionLbl";
             this.ExtensionLbl.Size = new System.Drawing.Size(42, 22);
@@ -294,10 +294,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SelectFileBtn.AutoSize = true;
             this.SelectFileBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SelectFileBtn.Location = new System.Drawing.Point(887, 110);
+            this.SelectFileBtn.Location = new System.Drawing.Point(896, 110);
             this.SelectFileBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.SelectFileBtn.Name = "SelectFileBtn";
-            this.SelectFileBtn.Size = new System.Drawing.Size(123, 30);
+            this.SelectFileBtn.Size = new System.Drawing.Size(126, 30);
             this.SelectFileBtn.TabIndex = 3;
             this.SelectFileBtn.Text = "Select file";
             this.SelectFileBtn.UseVisualStyleBackColor = true;
@@ -312,7 +312,7 @@
             this.InputFileLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.InputFileLbl.Name = "InputFileLbl";
             this.InputFileLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.InputFileLbl.Size = new System.Drawing.Size(191, 42);
+            this.InputFileLbl.Size = new System.Drawing.Size(193, 42);
             this.InputFileLbl.TabIndex = 10;
             this.InputFileLbl.Text = "Name input file:";
             this.InputFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -321,7 +321,7 @@
             // 
             this.DisclaimerLbl.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.DisclaimerLbl.AutoSize = true;
-            this.DisclaimerLbl.Location = new System.Drawing.Point(475, 614);
+            this.DisclaimerLbl.Location = new System.Drawing.Point(480, 614);
             this.DisclaimerLbl.Name = "DisclaimerLbl";
             this.DisclaimerLbl.Size = new System.Drawing.Size(70, 22);
             this.DisclaimerLbl.TabIndex = 15;
@@ -340,7 +340,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1020, 652);
+            this.ClientSize = new System.Drawing.Size(1032, 658);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
