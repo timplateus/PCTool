@@ -89,22 +89,25 @@ namespace PCTool
             int rowCount = Entries.Count;
             int colCount = FileIds.Count;
 
-            string[,] matrix = new string[rowCount + 1, colCount + 3];
-            matrix[0, 0] = "ListName";
-            matrix[0, 1] = "ParamName";
-            matrix[0, 2] = "ConfigName";
+            //Make an array of strings with dimension rowCount+1 (add 1 row for headers) and colCount+4 (add 4 rows for identifiers).
+            string[,] matrix = new string[rowCount + 1, colCount + 4];
+            matrix[0, 0] = "SetName";
+            matrix[0, 1] = "ListName";
+            matrix[0, 2] = "ParamName";
+            matrix[0, 3] = "ConfigName";
 
             for (int i = 0; i < colCount; i++)
             {
-                matrix[0, i + 3] = FileIds[i];
+                matrix[0, i + 4] = FileIds[i];
             }
 
             for (int i = 0; i < rowCount; i++)
             {
                 Entry entry = Entries[i];
-                matrix[i + 1, 0] = entry.ListName;
-                matrix[i + 1, 1] = entry.ParamName;
-                matrix[i + 1, 2] = entry.ConfigName;
+                matrix[i + 1, 0] = entry.SetName;
+                matrix[i + 1, 1] = entry.ListName;
+                matrix[i + 1, 2] = entry.ParamName;
+                matrix[i + 1, 3] = entry.ConfigName;
 
                 for (int j = 0; j < colCount; j++)
                 {
@@ -113,11 +116,11 @@ namespace PCTool
                     ParamValue val = entry.Values.Find(v => v.FileId == id);
                     if (val != null)
                     {
-                        matrix[i + 1, j + 3] = val.Value;
+                        matrix[i + 1, j + 4] = val.Value;
                     }
                     else
                     {
-                        matrix[i + 1, j + 3] = "!NOT_FOUND";
+                        matrix[i + 1, j + 4] = "!NOT_FOUND";
                     }
 
                 }
@@ -244,6 +247,22 @@ namespace PCTool
             }
 
             return errors;
+        }
+
+        /// <summary> Check if 'list1' has same SetName as 'list2'. </summary>
+        /// <remarks> Tplateus, 4/01/2018. </remarks>
+        /// <param name="list1"> The first list. </param>
+        /// <param name="list2"> The second list. </param>
+        /// <returns> True if same set, false if not. </returns>
+        private bool IsSameSet(List<Entry> list1, List<Entry> list2)
+        {
+            bool isSameSet = false;
+
+            if (list1[0].SetName == list2[0].SetName)
+            {
+                isSameSet = true;
+            }
+            return isSameSet;
         }
 
         #endregion
@@ -418,7 +437,7 @@ namespace PCTool
                         object[,] objRow = row.Value2;
                         List<string> listRow = objRow.Cast<string>().ToList(); //To utilize methods like findAll, the array is transformed to a list.
 
-                        for (int i = 3; i < listRow.Count; i++) //First 3 columns are ignored since they dont have values (only ids).
+                        for (int i = 4; i < listRow.Count; i++) //First 3 columns are ignored since they dont have values (only ids).
                         {
                             string cellValue = listRow[i];
                             List<string> allSameValues = listRow.FindAll(x => x == cellValue); //Search all cells with value == current cell value. If all values in the row are the same, its count should be the listRowCount -3 (ids).
@@ -426,7 +445,7 @@ namespace PCTool
 
                             if (allValuesWithNotFound.Count == 0)
                             {
-                                if (allSameValues.Count < listRow.Count - 3)
+                                if (allSameValues.Count < listRow.Count - 4)
                                 {
                                     //Console.WriteLine(row.Cells[iRow, listRow.Count].Value2);
                                     Excel.Range value = row.Cells[1, i + 1];
@@ -558,7 +577,7 @@ namespace PCTool
                 if (!di.Exists)
                 {
                     string message = "The directory does not exist. Create new directory?";
-                    if (MessageBox.Show(message, "Attention") == DialogResult.Yes)
+                    if (MessageBox.Show(message, "Attention",MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         di.Create();
                     }
@@ -733,24 +752,54 @@ namespace PCTool
         }
         #endregion
 
-        #region Todo
+        #region Todo: Tables
 
-        /// <summary> Check if 'list1' has same SetName as 'list2'. </summary>
-        /// <remarks> Tplateus, 4/01/2018. </remarks>
-        /// <param name="list1"> The first list. </param>
-        /// <param name="list2"> The second list. </param>
-        /// <returns> True if same set, false if not. </returns>
-        private bool IsSameSet(List<Entry> list1, List<Entry> list2)
+        private List<ColumnRecord> LoadParamTable(string filepath,string fileId)
         {
-            bool isSameSet = false;
-
-            if (list1[0].SetName == list2[0].SetName)
+            try
             {
-                isSameSet = true;
+                List<XElement> loadedXml = XElement.Load(filepath).Descendants("paramTable").ToList();
+
+                List<ColumnRecord> records = new List<ColumnRecord>();
+
+                foreach (XElement xTable in loadedXml)
+                {
+                    string setName = xTable.Element("setName").Value;
+                    string tableName = xTable.Element("paramTableName").Value;
+
+                    List<XElement> xRecords = xTable.Descendants("paramRecord").ToList();
+                    foreach (XElement xRecord in xRecords)
+                    {
+                        string configName = xRecord.Element("configName").Value;
+
+                        List<XElement> xValues = xRecord.Descendants("paramRecordValue").ToList();
+
+                        foreach (XElement xRecordValue in xValues)
+                        {
+                            string columnName = xRecordValue.Element("paramColumnName").Value;
+                            string columnValue = xRecordValue.Element("paramColumnValue").Value;
+
+                            ParamValue pVal = new ParamValue(fileId, columnValue);
+                            ColumnRecord colRec = new ColumnRecord(configName, columnName, pVal);
+
+                            records.Add(colRec);
+                        }
+                    }
+                }
+                return records;
             }
-            return isSameSet;
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception while loading from file {0}:", filepath);
+                Console.WriteLine(e.Message);
+                return null;
+            }
+
         }
-      
+
+        //Opgepast: Als de XML een lege paramLists node heeft (<paramLists />) dan geeft hij een error weer.
+        // Todo: taal wijzigen
+        
         #endregion
 
        
