@@ -79,48 +79,117 @@ namespace PCTool
             }
         }
 
+        /// <summary> Loads an XML file with paramTable elements into a list of entries. </summary>
+        /// <remarks> Tplateus, 6/02/2018. </remarks>
+        /// <param name="filepath"> The filepath. </param>
+        /// <param name="fileId">   Identifier for the file. Will be used to compare entries of diffenrent files and to populate Excel header row. </param>
+        /// <returns> The list of entries. </returns>
+        private List<Entry> LoadParamTable(string filepath, string fileId)
+        {
+            try
+            {
+                List<XElement> loadedXml = XElement.Load(filepath).Descendants("paramTable").ToList();
+
+                List<Entry> records = new List<Entry>();
+
+                foreach (XElement xTable in loadedXml)
+                {
+                    string setName = xTable.Element("setName").Value;
+                    string tableName = xTable.Element("paramTableName").Value;
+
+                    List<XElement> xRecords = xTable.Descendants("paramRecord").ToList();
+                    foreach (XElement xRecord in xRecords)
+                    {
+                        string position = xRecord.Element("paramRecordRow").Value;
+                        string configName = xRecord.Element("configName").Value;
+
+                        List<XElement> xValues = xRecord.Descendants("paramRecordValue").ToList();
+
+                        foreach (XElement xRecordValue in xValues)
+                        {
+                            string columnName = System.Net.WebUtility.HtmlDecode(xRecordValue.Element("paramColumnName").Value);
+                            string columnValue = System.Net.WebUtility.HtmlDecode(xRecordValue.Element("paramColumnValue").Value);
+
+                            Entry entry = new Entry(setName, tableName, columnName, configName);
+                            entry.AddValue(fileId, columnValue);
+                            entry.Position = position;
+                            records.Add(entry);
+                        }
+
+                    }
+                }
+                return records;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception while loading from file {0}:", filepath);
+                Console.WriteLine(e.Message);
+                return null;
+            }
+
+        }
+
+
         /// <summary> Transform list of entries into 2D array. </summary>
         /// <remarks> Tplateus, 3/01/2018. </remarks>
         /// <param name="Entries"> The entries. </param>
         /// <param name="FileIds"> List of identifiers for the files (for the headers). </param>
+        /// <param name="configuration">Configuration string for working with paramLists or paramTables=.</param>
         /// <returns> A 2D array of strings. </returns>
-        private string[,] TransformInto2DArray(List<Entry> Entries, List<string> FileIds)
+        private string[,] TransformInto2DArray(List<Entry> Entries, List<string> FileIds, string configuration = "list")
         {
-            int rowCount = Entries.Count;
-            int colCount = FileIds.Count;
+            List<string> headers = new List<string> { "SetName", "ListName", "ParamName", "ConfigName" };
 
-            //Make an array of strings with dimension rowCount+1 (add 1 row for headers) and colCount+4 (add 4 rows for identifiers).
-            string[,] matrix = new string[rowCount + 1, colCount + 4];
-            matrix[0, 0] = "SetName";
-            matrix[0, 1] = "ListName";
-            matrix[0, 2] = "ParamName";
-            matrix[0, 3] = "ConfigName";
-
-            for (int i = 0; i < colCount; i++)
+            if (configuration == "table")
             {
-                matrix[0, i + 4] = FileIds[i];
+                headers = new List<string> { "SetName", "TableName", "Position", "ColumnName", "ConfigName" };
             }
 
-            for (int i = 0; i < rowCount; i++)
-            {
-                Entry entry = Entries[i];
-                matrix[i + 1, 0] = entry.SetName;
-                matrix[i + 1, 1] = entry.ListName;
-                matrix[i + 1, 2] = entry.ParamName;
-                matrix[i + 1, 3] = entry.ConfigName;
+            int nParams = headers.Count;
 
-                for (int j = 0; j < colCount; j++)
+            headers.AddRange(FileIds);
+
+            int rowCount = Entries.Count + 1;
+            int colCount = headers.Count;
+
+            //Make an array of strings with dimension rowCount+1 (add 1 row for headers) and colCount+4 (add 4 rows for identifiers).
+            string[,] matrix = new string[rowCount , colCount];
+            for (int i = 0; i < colCount; i++)
+            {
+                matrix[0, i] = headers[i];
+            }
+
+            for (int i = 1; i < rowCount; i++)
+            {
+                Entry entry = Entries[i-1];
+                if (configuration == "list")
                 {
-                    string id = FileIds[j];
+                    matrix[i, 0] = entry.SetName;
+                    matrix[i, 1] = entry.ContainerName;
+                    matrix[i, 2] = entry.ParamName;
+                    matrix[i, 3] = entry.ConfigName;
+                } else
+                {
+                    matrix[i, 0] = entry.SetName;
+                    matrix[i, 1] = entry.ContainerName;
+                    matrix[i, 2] = entry.Position;
+                    matrix[i, 3] = entry.ParamName;
+                    matrix[i, 4] = entry.ConfigName;
+                }
+                
+
+                for (int j = nParams; j < colCount; j++)
+                {
+                    string id = FileIds[j-nParams];
 
                     ParamValue val = entry.Values.Find(v => v.FileId == id);
                     if (val != null)
                     {
-                        matrix[i + 1, j + 4] = val.Value;
+                        matrix[i , j ] = val.Value;
                     }
                     else
                     {
-                        matrix[i + 1, j + 4] = "!NOT_FOUND";
+                        matrix[i , j ] = "!NOT_FOUND";
                     }
 
                 }
@@ -138,7 +207,7 @@ namespace PCTool
             List<Entry> result = baselist;
             foreach (Entry entry in listToAdd)
             {
-                int index = result.FindIndex(e => (e.SetName == entry.SetName && e.ListName == entry.ListName && e.ParamName == entry.ParamName && e.ConfigName == entry.ConfigName));
+                int index = result.FindIndex(e => (e.SetName == entry.SetName && e.ContainerName == entry.ContainerName && e.ParamName == entry.ParamName && e.ConfigName == entry.ConfigName && e.Position == entry.Position));
 
                 if (index == -1)
                 {
@@ -153,7 +222,7 @@ namespace PCTool
 
             return result;
         }
-
+        
         /// <summary> Loads file paths. </summary>
         /// <remarks> Tplateus, 3/01/2018. </remarks>
         /// <returns> The file paths. Returns null if a filepath was omitted.</returns>
@@ -256,12 +325,13 @@ namespace PCTool
         /// <returns> True if same set, false if not. </returns>
         private bool IsSameSet(List<Entry> list1, List<Entry> list2)
         {
-            bool isSameSet = false;
-
-            if (list1[0].SetName == list2[0].SetName)
+            bool isSameSet = true;
+            
+            if (list1.Count != 0 && list2.Count !=0 && list1.First().SetName != list2.First().SetName)
             {
-                isSameSet = true;
+               isSameSet = false;
             }
+            
             return isSameSet;
         }
 
@@ -341,8 +411,8 @@ namespace PCTool
 
         /// <summary> Displays a 2DArray in excel. </summary>
         /// <remarks> Tplateus, 3/01/2018. </remarks>
-        /// <param name="Matrix"> The 2DArray of entries. </param>
-        private void DisplayInExcel2(string[,] Matrix)
+        /// <param name="ListMatrix"> The 2DArray of entries. </param>
+        private void DisplayInExcel(string[,] ListMatrix, string[,] TableMatrix)
         {
             Excel.Application app = null;
             Excel.Application openApp = null;
@@ -353,14 +423,15 @@ namespace PCTool
             Excel.Workbook book = null;
 
             Excel.Sheets sheets = null;
-            Excel.Worksheet sheet = null;
+            Excel.Worksheet sheetList = null;
+            Excel.Worksheet sheetTable = null;
 
             Excel.Range range = null;
             Excel.Range rows = null;
             Excel.Range cols = null;
 
             List<string> errors = new List<string>();
-
+            
             try
             {
                 try
@@ -383,7 +454,7 @@ namespace PCTool
                 }
                 catch
                 {
-
+                    Console.WriteLine("No active Excel instance found. Starting an Excel instance...");
                 }
                 finally
                 {
@@ -403,80 +474,93 @@ namespace PCTool
                 {
 
 
+                    app.SheetsInNewWorkbook = 2;
+                    app.DisplayAlerts = false;
 
                     books = app.Workbooks;
                     book = books.Add();
                     sheets = book.Sheets;
-                    sheet = sheets.Item[1];
-                    range = sheet.Cells[1, 1];
+                    sheetList = sheets.Item[1];
+                    sheetTable = sheets.Item[2];
 
-                    int rowCount = Matrix.GetLength(0);
-                    int columnCount = Matrix.GetLength(1);
+                    range = sheetList.Cells[1, 1];
 
-                    range = range.Resize[rowCount, columnCount];
+                    sheetList.Name = "List parameters";
+                    sheetTable.Name = "Table parameters";
 
-                    range.Value = Matrix;
+                    #region format Sheet
+                    //int rowCount = Matrix.GetLength(0);
+                    //int columnCount = Matrix.GetLength(1);
 
-                    rows = range.Rows;
+                    //range = range.Resize[rowCount, columnCount];
 
-                    cols = range.Columns;
+                    //range.Value = Matrix;
 
-                    //Set column widths to 300 pixels for each column in range.
-                    for (int iCol = 1; iCol <= columnCount; iCol++) //COMObject has a 1-based index.
-                    {
-                        Excel.Range column = cols[iCol];
-                        column.ColumnWidth = 32.56; //Translates to 300 pixels. Verify in Excel.
+                    //rows = range.Rows;
 
-                        if (column != null) Marshal.ReleaseComObject(column);
-                    }
+                    //cols = range.Columns;
 
-                    for (int iRow = 2; iRow <= rowCount; iRow++) // COMObject index starts at 1, not 0. First row is ignored (headers) => iRow = 2
-                    {
-                        Excel.Range row = rows.Item[iRow]; 
+                    ////Set column widths to 300 pixels for each column in range.
+                    //for (int iCol = 1; iCol <= columnCount; iCol++) //COMObject has a 1-based index.
+                    //{
+                    //    Excel.Range column = cols[iCol];
+                    //    column.ColumnWidth = 32.56; //Translates to 300 pixels. Verify in Excel.
 
-                        object[,] objRow = row.Value2;
-                        List<string> listRow = objRow.Cast<string>().ToList(); //To utilize methods like findAll, the array is transformed to a list.
+                    //    if (column != null) Marshal.ReleaseComObject(column);
+                    //}
 
-                        for (int i = 4; i < listRow.Count; i++) //First 3 columns are ignored since they dont have values (only ids).
-                        {
-                            string cellValue = listRow[i];
-                            List<string> allSameValues = listRow.FindAll(x => x == cellValue); //Search all cells with value == current cell value. If all values in the row are the same, its count should be the listRowCount -3 (ids).
-                            List<string> allValuesWithNotFound = listRow.FindAll(x => x == "!NOT_FOUND"); //!NOT_FOUND value is manually added in the 'TransformInto2DArray' method.
+                    //for (int iRow = 2; iRow <= rowCount; iRow++) // COMObject index starts at 1, not 0. First row is ignored (headers) => iRow = 2
+                    //{
+                    //    Excel.Range row = rows.Item[iRow];
 
-                            if (allValuesWithNotFound.Count == 0)
-                            {
-                                if (allSameValues.Count < listRow.Count - 4)
-                                {
-                                    //Console.WriteLine(row.Cells[iRow, listRow.Count].Value2);
-                                    Excel.Range value = row.Cells[1, i + 1];
-                                    //Console.WriteLine(value.Value2);
-                                    value.Interior.Color = Color.Red;
-                                    value.Font.Color = Color.White;
+                    //    object[,] objRow = row.Value2;
+                    //    List<string> listRow = objRow.Cast<string>().ToList(); //To utilize methods like findAll, the array is transformed to a list.
 
-                                    if (value != null) Marshal.ReleaseComObject(value);
-                                }
-                            }
-                            if (cellValue == "!NOT_FOUND")
-                            {
-                                Excel.Range cell = row.Cells[1, i + 1];
-                                cell.Interior.Color = Color.Orange;
-                                cell.Value2 = "";
+                    //    for (int i = nParams; i < listRow.Count; i++) //First 3 columns are ignored since they dont have values (only ids).
+                    //    {
+                    //        string cellValue = listRow[i];
+                    //        List<string> allSameValues = listRow.FindAll(x => x == cellValue); //Search all cells with value == current cell value. If all values in the row are the same, its count should be the listRowCount -3 (ids).
+                    //        List<string> allValuesWithNotFound = listRow.FindAll(x => x == "!NOT_FOUND"); //!NOT_FOUND value is manually added in the 'TransformInto2DArray' method.
 
-                                if (cell != null) Marshal.ReleaseComObject(cell);
-                            }
-                        }
+                    //        if (allValuesWithNotFound.Count == 0)
+                    //        {
+                    //            if (allSameValues.Count < listRow.Count - nParams)
+                    //            {
+                    //                //Console.WriteLine(row.Cells[iRow, listRow.Count].Value2);
+                    //                Excel.Range value = row.Cells[1, i + 1];
+                    //                //Console.WriteLine(value.Value2);
+                    //                value.Interior.Color = Color.Red;
+                    //                value.Font.Color = Color.White;
 
-                        if (row != null) Marshal.ReleaseComObject(row);
-                    }
+                    //                if (value != null) Marshal.ReleaseComObject(value);
+                    //            }
+                    //        }
+                    //        if (cellValue == "!NOT_FOUND")
+                    //        {
+                    //            Excel.Range cell = row.Cells[1, i + 1];
+                    //            cell.Interior.Color = Color.Orange;
+                    //            cell.Value2 = "";
 
-                    app.DisplayAlerts = false;
+                    //            if (cell != null) Marshal.ReleaseComObject(cell);
+                    //        }
+                    //    }
+
+                    //    if (row != null) Marshal.ReleaseComObject(row);
+                    //} 
+                    #endregion
+
+                    FormatSheet(4, ListMatrix, sheetList);
+                    FormatSheet(5, TableMatrix, sheetTable);
+
                     object missing = System.Reflection.Missing.Value;
                     book.SaveAs(outputfile, Excel.XlFileFormat.xlWorkbookDefault, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
                     book.Close(true, missing, missing);
+
+                    app.SheetsInNewWorkbook = 3;
                     app.DisplayAlerts = true;
                     app.Quit();
 
-                    string message = "The file '" + OutputFilenameBox.Text + ".xlsx' was succesfully created and placed in " + OutputDirBox.Text;
+                    string message = "The file '" + OutputFilenameBox.Text + ".xlsx' was succesfully placed in " + OutputDirBox.Text + ".";
                     MessageBox.Show(message, "Succes!");
                 }
                 else
@@ -489,17 +573,13 @@ namespace PCTool
                 if (cols != null) Marshal.ReleaseComObject(cols);
                 if (rows != null) { Marshal.ReleaseComObject(rows); Console.WriteLine("COMObject 'rows' released."); }
                 if (range != null) { Marshal.ReleaseComObject(range); Console.WriteLine("COMObject 'range' released."); }
-                if (sheet != null) { Marshal.ReleaseComObject(sheet); Console.WriteLine("COMObject 'sheet' released."); }
+                if (sheetTable != null) { Marshal.ReleaseComObject(sheetTable);Console.WriteLine("COMObject 'sheetTable' released."); }
+                if (sheetList != null) { Marshal.ReleaseComObject(sheetList); Console.WriteLine("COMObject 'sheetList' released."); }
                 if (sheets != null) { Marshal.ReleaseComObject(sheets); Console.WriteLine("COMObject 'sheets' released."); }
                 if (book != null) { Marshal.ReleaseComObject(book); Console.WriteLine("COMObject 'book' released."); }
                 if (books != null) { Marshal.ReleaseComObject(books); Console.WriteLine("COMObject 'books' released."); }
                 if (app != null) { Marshal.ReleaseComObject(app); Console.WriteLine("COMObject 'app' released."); }
-
-
             }
-
-
-
         }
 
         /// <summary> Generates the Excel file and populates it. </summary>
@@ -534,11 +614,12 @@ namespace PCTool
             {
                 //Create a 'baselist' of entries (1 file), then merge all other files into this list.
                 List<Entry> baseList = LoadParamList(filepaths[0], fileIds[0]);
+                List<Entry> baseTable = LoadParamTable(filepaths[0], fileIds[0]);
 
                 for (int i = 1; i < filepaths.Count; i++)
                 {
                     List<Entry> newList = LoadParamList(filepaths[i], fileIds[i]);
-
+                    List<Entry> newTable = LoadParamTable(filepaths[i], fileIds[i]);
                     if (!IsSameSet(baseList,newList))
                     {
                         string message = "The selected files have different setnames." + Environment.NewLine + "Comparing files that come from different sets can take considerably longer. Do you want to continue?";
@@ -548,14 +629,20 @@ namespace PCTool
                         }
                     }
                     baseList = MergeLists(baseList, newList);
+                    baseTable = MergeLists(baseTable, newTable);
                 }
 
-                string[,] allCells = TransformInto2DArray(baseList, fileIds);
-                DisplayInExcel2(allCells);
+
+
+                string[,] allListCells = TransformInto2DArray(baseList, fileIds,"list");
+                string[,] allTableCells = TransformInto2DArray(baseTable, fileIds, "table");
+
+                DisplayInExcel(allListCells,allTableCells);
             }
             catch (Exception e)
             {
                 DisplayErrors(e.Message);
+                MessageBox.Show(e.Source);
                 return;
             }
 
@@ -678,10 +765,9 @@ namespace PCTool
         /// <param name="e">      Event information. </param>
         private void DeleteFilesBtn_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to clear the table?", "", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-            {
-                dataGridView1.Rows.Clear();
-            }
+
+            dataGridView1.Rows.Clear();
+           
         }
 
         /// <summary> Event handler. Called by OutputFilenameBox for enter events. </summary>
@@ -752,56 +838,101 @@ namespace PCTool
         }
         #endregion
 
-        #region Todo: Tables
-
-        private List<ColumnRecord> LoadParamTable(string filepath,string fileId)
-        {
-            try
-            {
-                List<XElement> loadedXml = XElement.Load(filepath).Descendants("paramTable").ToList();
-
-                List<ColumnRecord> records = new List<ColumnRecord>();
-
-                foreach (XElement xTable in loadedXml)
-                {
-                    string setName = xTable.Element("setName").Value;
-                    string tableName = xTable.Element("paramTableName").Value;
-
-                    List<XElement> xRecords = xTable.Descendants("paramRecord").ToList();
-                    foreach (XElement xRecord in xRecords)
-                    {
-                        string configName = xRecord.Element("configName").Value;
-
-                        List<XElement> xValues = xRecord.Descendants("paramRecordValue").ToList();
-
-                        foreach (XElement xRecordValue in xValues)
-                        {
-                            string columnName = xRecordValue.Element("paramColumnName").Value;
-                            string columnValue = xRecordValue.Element("paramColumnValue").Value;
-
-                            ParamValue pVal = new ParamValue(fileId, columnValue);
-                            ColumnRecord colRec = new ColumnRecord(configName, columnName, pVal);
-
-                            records.Add(colRec);
-                        }
-                    }
-                }
-                return records;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception while loading from file {0}:", filepath);
-                Console.WriteLine(e.Message);
-                return null;
-            }
-
-        }
 
         //Opgepast: Als de XML een lege paramLists node heeft (<paramLists />) dan geeft hij een error weer.
+        //Gefixt: probleem was het aanspreken van het eerste element in een lege List -> if(list.Count!=0) toegevoegd aan IsSameSet.
         // Todo: taal wijzigen
+
+        #region Todo: Tables
+
         
+        private void FormatSheet(int nParams, string[,] cellData, Excel.Worksheet sheet)
+        {
+            Excel.Range range = null;
+            Excel.Range rows = null;
+            Excel.Range cols = null;
+
+            int rowCount = cellData.GetLength(0);
+            int columnCount = cellData.GetLength(1);
+
+            try
+            {
+                range = sheet.Cells[1, 1];
+                range = range.Resize[rowCount, columnCount];
+                range.Value = cellData;
+
+                rows = range.Rows;
+                cols = range.Columns;
+
+                for (int iCol = 1; iCol <= columnCount; iCol++)
+                {
+                    Excel.Range column = cols[iCol];
+                    column.ColumnWidth = 32.56;
+
+                    if (column != null) Marshal.ReleaseComObject(column);
+                }
+
+                for (int iRow = 2; iRow <= rowCount; iRow++)
+                {
+                    Excel.Range row = rows.Item[iRow];
+
+                    object[,] objRow = row.Value2;
+                    List<string> listRow = objRow.Cast<string>().ToList();
+
+                    for (int i = nParams; i < listRow.Count; i++)
+                    {
+                        string cellValue = listRow[i];
+                        List<string> allSame = listRow.FindAll(x => x == cellValue);
+                        List<string> notFound = listRow.FindAll(x => x == "!NOT_FOUND");
+
+                        if (notFound.Count == 0)
+                        {
+                            if (allSame.Count < listRow.Count - nParams) 
+                            {
+                                Excel.Range value = row.Cells[1, i + 1];
+                                value.Interior.Color = Color.Red;
+                                value.Font.Color = Color.White;
+
+                                if (value != null) Marshal.ReleaseComObject(value);
+                            }
+                        }
+                        if (cellValue == "!NOT_FOUND")
+                        {
+                            Console.WriteLine("{1}: cellValue = {0}.", cellValue,iRow);
+                            Excel.Range value = row.Cells[1, i + 1];
+                            value.Interior.Color = Color.Orange;
+                            value.Value2 = "";
+
+                            if (value != null) Marshal.ReleaseComObject(value);
+                        }
+                    }
+
+                    if (row != null) Marshal.ReleaseComObject(row);
+                }
+            }
+            finally
+            {
+                if (cols != null) Marshal.ReleaseComObject(cols);
+                if (rows != null) Marshal.ReleaseComObject(rows);
+                if (range != null) Marshal.ReleaseComObject(range);
+            }
+            
+        }
+
         #endregion
 
-       
+        private void OutputDirBox_Enter(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                OutputDirBox_Leave(sender, e);
+
+                if (OutputDirBox.Text != "")
+                {
+                    GetNextControl(GetNextControl((Control)sender, true), true).Focus();
+                }
+            }
+        }
+        
     }
 }

@@ -57,10 +57,10 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.80198F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.40594F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5.940594F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.85149F));
             this.tableLayoutPanel1.Controls.Add(this.DescriptionBox, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.DescriptionLbl, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 4);
@@ -87,12 +87,10 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 57F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1032, 658);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1032, 670);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // DescriptionBox
@@ -100,9 +98,9 @@
             this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.DescriptionBox, 2);
             this.DescriptionBox.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescriptionBox.Location = new System.Drawing.Point(209, 160);
+            this.DescriptionBox.Location = new System.Drawing.Point(207, 160);
             this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(664, 29);
+            this.DescriptionBox.Size = new System.Drawing.Size(668, 29);
             this.DescriptionBox.TabIndex = 4;
             this.DescriptionBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
             // 
@@ -110,12 +108,12 @@
             // 
             this.DescriptionLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.DescriptionLbl.AutoSize = true;
-            this.DescriptionLbl.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescriptionLbl.Location = new System.Drawing.Point(3, 154);
+            this.DescriptionLbl.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DescriptionLbl.Location = new System.Drawing.Point(3, 155);
             this.DescriptionLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.DescriptionLbl.Name = "DescriptionLbl";
             this.DescriptionLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.DescriptionLbl.Size = new System.Drawing.Size(193, 42);
+            this.DescriptionLbl.Size = new System.Drawing.Size(191, 40);
             this.DescriptionLbl.TabIndex = 10;
             this.DescriptionLbl.Text = "Description:";
             this.DescriptionLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -157,14 +155,14 @@
             // GenerateExcelBtn
             // 
             this.GenerateExcelBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GenerateExcelBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GenerateExcelBtn.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GenerateExcelBtn.ForeColor = System.Drawing.Color.DarkGreen;
-            this.GenerateExcelBtn.Location = new System.Drawing.Point(879, 603);
+            this.GenerateExcelBtn.Location = new System.Drawing.Point(881, 603);
             this.GenerateExcelBtn.Margin = new System.Windows.Forms.Padding(3, 3, 10, 3);
             this.GenerateExcelBtn.Name = "GenerateExcelBtn";
-            this.GenerateExcelBtn.Size = new System.Drawing.Size(143, 44);
+            this.GenerateExcelBtn.Size = new System.Drawing.Size(141, 51);
             this.GenerateExcelBtn.TabIndex = 6;
-            this.GenerateExcelBtn.Text = "Generate Excel";
+            this.GenerateExcelBtn.Text = "Generate Excel (F5)";
             this.GenerateExcelBtn.UseVisualStyleBackColor = true;
             this.GenerateExcelBtn.Click += new System.EventHandler(this.GenerateExcelBtn_Click);
             // 
@@ -174,10 +172,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AddtoListBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddtoListBtn.Location = new System.Drawing.Point(896, 160);
+            this.AddtoListBtn.Location = new System.Drawing.Point(898, 160);
             this.AddtoListBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.AddtoListBtn.Name = "AddtoListBtn";
-            this.AddtoListBtn.Size = new System.Drawing.Size(126, 30);
+            this.AddtoListBtn.Size = new System.Drawing.Size(124, 30);
             this.AddtoListBtn.TabIndex = 5;
             this.AddtoListBtn.Text = "Add to list";
             this.AddtoListBtn.UseVisualStyleBackColor = true;
@@ -189,11 +187,11 @@
             this.SelectFileLbl.AutoSize = true;
             this.SelectFileLbl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tableLayoutPanel1.SetColumnSpan(this.SelectFileLbl, 2);
-            this.SelectFileLbl.Location = new System.Drawing.Point(209, 110);
+            this.SelectFileLbl.Location = new System.Drawing.Point(207, 110);
             this.SelectFileLbl.Margin = new System.Windows.Forms.Padding(3);
             this.SelectFileLbl.Name = "SelectFileLbl";
             this.SelectFileLbl.Padding = new System.Windows.Forms.Padding(5, 2, 0, 3);
-            this.SelectFileLbl.Size = new System.Drawing.Size(664, 29);
+            this.SelectFileLbl.Size = new System.Drawing.Size(668, 29);
             this.SelectFileLbl.TabIndex = 9;
             this.SelectFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -201,12 +199,12 @@
             // 
             this.OutputDirLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.OutputDirLbl.AutoSize = true;
-            this.OutputDirLbl.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputDirLbl.Location = new System.Drawing.Point(3, 4);
+            this.OutputDirLbl.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputDirLbl.Location = new System.Drawing.Point(3, 5);
             this.OutputDirLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.OutputDirLbl.Name = "OutputDirLbl";
             this.OutputDirLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.OutputDirLbl.Size = new System.Drawing.Size(193, 42);
+            this.OutputDirLbl.Size = new System.Drawing.Size(191, 40);
             this.OutputDirLbl.TabIndex = 10;
             this.OutputDirLbl.Text = "Output directory:";
             this.OutputDirLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -216,11 +214,11 @@
             this.OutputDirBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.OutputDirBox, 2);
             this.OutputDirBox.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputDirBox.Location = new System.Drawing.Point(209, 10);
+            this.OutputDirBox.Location = new System.Drawing.Point(207, 10);
             this.OutputDirBox.Name = "OutputDirBox";
-            this.OutputDirBox.Size = new System.Drawing.Size(664, 29);
+            this.OutputDirBox.Size = new System.Drawing.Size(668, 29);
             this.OutputDirBox.TabIndex = 0;
-            this.OutputDirBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DescriptionBox_Enter);
+            this.OutputDirBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OutputDirBox_Enter);
             this.OutputDirBox.Leave += new System.EventHandler(this.OutputDirBox_Leave);
             // 
             // BrowseDirBtn
@@ -228,11 +226,11 @@
             this.BrowseDirBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseDirBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BrowseDirBtn.Location = new System.Drawing.Point(896, 10);
+            this.BrowseDirBtn.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BrowseDirBtn.Location = new System.Drawing.Point(898, 10);
             this.BrowseDirBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.BrowseDirBtn.Name = "BrowseDirBtn";
-            this.BrowseDirBtn.Size = new System.Drawing.Size(126, 30);
+            this.BrowseDirBtn.Size = new System.Drawing.Size(124, 30);
             this.BrowseDirBtn.TabIndex = 1;
             this.BrowseDirBtn.Text = "Browse";
             this.BrowseDirBtn.UseVisualStyleBackColor = true;
@@ -242,12 +240,12 @@
             // 
             this.OutputFilenameLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.OutputFilenameLbl.AutoSize = true;
-            this.OutputFilenameLbl.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputFilenameLbl.Location = new System.Drawing.Point(3, 54);
+            this.OutputFilenameLbl.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputFilenameLbl.Location = new System.Drawing.Point(3, 55);
             this.OutputFilenameLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.OutputFilenameLbl.Name = "OutputFilenameLbl";
             this.OutputFilenameLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.OutputFilenameLbl.Size = new System.Drawing.Size(193, 42);
+            this.OutputFilenameLbl.Size = new System.Drawing.Size(191, 40);
             this.OutputFilenameLbl.TabIndex = 10;
             this.OutputFilenameLbl.Text = "Name output file:";
             this.OutputFilenameLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -256,10 +254,10 @@
             // 
             this.OutputFilenameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.OutputFilenameBox.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputFilenameBox.Location = new System.Drawing.Point(209, 60);
+            this.OutputFilenameBox.Location = new System.Drawing.Point(207, 60);
             this.OutputFilenameBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.OutputFilenameBox.Name = "OutputFilenameBox";
-            this.OutputFilenameBox.Size = new System.Drawing.Size(616, 29);
+            this.OutputFilenameBox.Size = new System.Drawing.Size(610, 29);
             this.OutputFilenameBox.TabIndex = 2;
             this.OutputFilenameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OutputFilenameBox_Enter);
             // 
@@ -267,18 +265,19 @@
             // 
             this.ExtensionLbl.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ExtensionLbl.AutoSize = true;
-            this.ExtensionLbl.Location = new System.Drawing.Point(825, 64);
-            this.ExtensionLbl.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.ExtensionLbl.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExtensionLbl.Location = new System.Drawing.Point(817, 65);
+            this.ExtensionLbl.Margin = new System.Windows.Forms.Padding(0);
             this.ExtensionLbl.Name = "ExtensionLbl";
-            this.ExtensionLbl.Size = new System.Drawing.Size(42, 22);
+            this.ExtensionLbl.Size = new System.Drawing.Size(49, 20);
             this.ExtensionLbl.TabIndex = 14;
             this.ExtensionLbl.Text = ".xlsx";
             // 
             // DeleteFilesBtn
             // 
             this.DeleteFilesBtn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DeleteFilesBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteFilesBtn.Location = new System.Drawing.Point(10, 603);
+            this.DeleteFilesBtn.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteFilesBtn.Location = new System.Drawing.Point(10, 606);
             this.DeleteFilesBtn.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.DeleteFilesBtn.Name = "DeleteFilesBtn";
             this.DeleteFilesBtn.Size = new System.Drawing.Size(142, 44);
@@ -293,11 +292,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SelectFileBtn.AutoSize = true;
-            this.SelectFileBtn.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SelectFileBtn.Location = new System.Drawing.Point(896, 110);
+            this.SelectFileBtn.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectFileBtn.Location = new System.Drawing.Point(898, 110);
             this.SelectFileBtn.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
             this.SelectFileBtn.Name = "SelectFileBtn";
-            this.SelectFileBtn.Size = new System.Drawing.Size(126, 30);
+            this.SelectFileBtn.Size = new System.Drawing.Size(124, 30);
             this.SelectFileBtn.TabIndex = 3;
             this.SelectFileBtn.Text = "Select file";
             this.SelectFileBtn.UseVisualStyleBackColor = true;
@@ -307,12 +306,12 @@
             // 
             this.InputFileLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.InputFileLbl.AutoSize = true;
-            this.InputFileLbl.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InputFileLbl.Location = new System.Drawing.Point(3, 104);
+            this.InputFileLbl.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InputFileLbl.Location = new System.Drawing.Point(3, 105);
             this.InputFileLbl.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.InputFileLbl.Name = "InputFileLbl";
             this.InputFileLbl.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.InputFileLbl.Size = new System.Drawing.Size(193, 42);
+            this.InputFileLbl.Size = new System.Drawing.Size(191, 40);
             this.InputFileLbl.TabIndex = 10;
             this.InputFileLbl.Text = "Name input file:";
             this.InputFileLbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -321,9 +320,10 @@
             // 
             this.DisclaimerLbl.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.DisclaimerLbl.AutoSize = true;
-            this.DisclaimerLbl.Location = new System.Drawing.Point(480, 614);
+            this.DisclaimerLbl.Font = new System.Drawing.Font("Verdana", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DisclaimerLbl.Location = new System.Drawing.Point(472, 618);
             this.DisclaimerLbl.Name = "DisclaimerLbl";
-            this.DisclaimerLbl.Size = new System.Drawing.Size(70, 22);
+            this.DisclaimerLbl.Size = new System.Drawing.Size(76, 20);
             this.DisclaimerLbl.TabIndex = 15;
             this.DisclaimerLbl.TabStop = true;
             this.DisclaimerLbl.Text = "© 2018";
@@ -340,8 +340,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1032, 658);
+            this.ClientSize = new System.Drawing.Size(1032, 670);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
