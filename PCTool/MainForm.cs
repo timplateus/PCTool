@@ -123,7 +123,7 @@ namespace PCTool
             catch (Exception e)
             {
                 Console.WriteLine("Exception while loading from file {0}:", filepath);
-                Console.WriteLine(e.Message);
+                
                 return null;
             }
 
@@ -838,10 +838,7 @@ namespace PCTool
         }
         #endregion
 
-
-        //Opgepast: Als de XML een lege paramLists node heeft (<paramLists />) dan geeft hij een error weer.
-        //Gefixt: probleem was het aanspreken van het eerste element in een lege List -> if(list.Count!=0) toegevoegd aan IsSameSet.
-        // Todo: taal wijzigen
+        
 
         #region Todo: Tables
 
